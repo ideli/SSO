@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.OrganiseMapper">
+
+	<!-- 删除 -->
+	<delete id="deleteByIds" parameterType="java.util.Map">
+		update UAOP_ORGANIZATION set status=1,
+			LAST_MODIFY_ACCOUNT=#{baseEntity.lastModifyAccount},
+			LAST_MODIFY_TIME=#{baseEntity.lastModifyTime},
+			LAST_TERMINAL=#{baseEntity.lastTerminal},
+			LAST_SYS=#{baseEntity.lastSys}
+		where
+		ORG_ID in (${ids})
+	</delete>
+	<select id="qryChildren" resultMap="organiseMap" parameterType="String">
+		select 
+			<include refid="selectId" />
+		  from uaop_organization t
+		 start with org_id in (${value})
+		connect by prior org_id = super_id
+	</select>
+	
+	<select id="getAllOrganises" resultMap="organiseMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_ORGANIZATION where STATUS=0
+	</select>
+	
+	<select id="getAllOrganisesBySystemId" resultMap="organiseMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_ORGANIZATION where STATUS=0 and SYSTEM_ID=#{systemId}
+	</select>
+	
+	
+	<!-- 增加信息 -->
+	<insert id="add" parameterType="Organise">
+		insert into UAOP_ORGANIZATION (
+		<include refid="selectId" />
+		)
+		values (
+		<include refid="insertId" />
+		)
+	</insert>
+
+	<insert id="addBatch" parameterType="java.util.List">
+		BEGIN
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			insert into UAOP_ORGANIZATION (
+			<include refid="selectId" />
+			)
+			values
+			(
+			<include refid="insertBatchId" />
+			)
+		</foreach>
+		;
+		END;
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="String">
+		update UAOP_ORGANIZATION
+		<set>
+			<include refid="updateId" />
+		</set>
+		where ORG_ID=#{orgId}
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="String">
+		delete from UAOP_ORGANIZATION where
+		ORG_ID=#{orgId}
+	</delete>
+
+	<!-- 查询所有符合条件的 -->
+	<select id="find" resultMap="organiseMap" parameterType="Organise">
+		select
+		<include refid="selectId" />
+		<include refid="clausePage" />
+	</select>
+
+	<!-- 根据主键查询 -->
+	<select id="getById" resultMap="organiseMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_ORGANIZATION
+		<where>
+			STATUS=0 and ORG_ID=#{orgId}
+		</where>
+	</select>
+
+	<sql id="clausePage">
+		from UAOP_ORGANIZATION
+		<where>
+		    STATUS=0
+		    <if test="systemId != null and systemId != ''">
+				and SYSTEM_ID=#{systemId}
+			</if>
+			<if test="type != null">
+				and TYPE=#{type}
+			</if>
+			<if test="name != null and name != ''">
+				and ORG_NAME like '%'||#{name}||'%'
+			</if>
+			<if test="orgCode != null and orgCode != ''">
+				and ORG_CODE=#{orgCode}
+			</if>
+			<if test="superId != null and superId != ''">
+				and SUPER_ID=#{superId}
+			</if>
+		</where>
+	</sql>
+
+	<select id="query" resultMap="organiseMap" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		<include refid="clausePage" />
+	</select>
+
+	<select id="count" resultType="Integer" parameterType="java.util.HashMap">
+		select
+		count(0)
+		<include refid="clausePage" />
+	</select>
+
+	<select id="getOrganiseListBySuperId" resultMap="organiseMap"
+		parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_ORGANIZATION
+		<where>
+			STATUS=0 and SUPER_ID=#{superId}
+		</where>
+	</select>
+
+	<update id="updateStatusById" parameterType="Organise">
+		update UAOP_ORGANIZATION
+		<set>
+			<include refid="updateStatusId" />
+		</set>
+		where ORG_ID=#{orgId}
+	</update>
+	
+	<select id="getOrganiseByUserId" resultMap="organiseMap" parameterType="String">
+		select
+		o.ORG_ID,
+		ORG_NAME,
+		ORG_CODE,
+		SUPER_ID,
+		o.TYPE,
+		NOTE,
+		PINYIN,
+		FIRST_LETTER,
+		SYSTEM_ID,
+		STATUS,
+		CREATE_ACCOUNT,
+		CREATE_TIME,
+		LAST_MODIFY_ACCOUNT,
+		LAST_MODIFY_TIME,
+		LAST_TERMINAL,
+		LAST_SYS
+		from UAOP_ORGANIZATION o,UAOP_USER_ORGANIZATION uo 
+		where o.ORG_ID=uo.ORG_ID and o.STATUS=0 and uo.USER_ID=#{userId} and ROWNUM=1
+	</select>
+	
+	<sql id="selectId">
+		ORG_ID,ORG_NAME,ORG_CODE,SUPER_ID,TYPE,NOTE,PINYIN,FIRST_LETTER,SYSTEM_ID,STATUS,CREATE_ACCOUNT,CREATE_TIME,LAST_TERMINAL,LAST_SYS
+	</sql>
+
+	<sql id="insertId">
+		#{orgId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{orgCode,jdbcType=VARCHAR},#{superId,jdbcType=VARCHAR},#{type,jdbcType=NUMERIC},#{note,jdbcType=VARCHAR},#{pinyin,jdbcType=VARCHAR},#{firstLetter,jdbcType=VARCHAR},#{systemId,jdbcType=VARCHAR},#{status,jdbcType=NUMERIC},#{createAccount,jdbcType=VARCHAR},#{createTime,jdbcType=NUMERIC},#{lastTerminal,jdbcType=VARCHAR},#{lastSys,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="insertBatchId">
+		#{item.orgId,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR},#{item.orgCode,jdbcType=VARCHAR},#{item.superId,jdbcType=VARCHAR},#{item.type,jdbcType=NUMERIC},#{item.note,jdbcType=VARCHAR},#{item.pinyin,jdbcType=VARCHAR},#{item.firstLetter,jdbcType=VARCHAR},#{item.systemId,jdbcType=VARCHAR},#{item.status,jdbcType=NUMERIC},#{item.createAccount,jdbcType=VARCHAR},#{item.createTime,jdbcType=NUMERIC},#{item.lastTerminal,jdbcType=VARCHAR},#{item.lastSys,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="updateId">
+		ORG_NAME=#{name,jdbcType=VARCHAR},ORG_CODE=#{orgCode,jdbcType=VARCHAR},SUPER_ID=#{superId,jdbcType=VARCHAR},TYPE=#{type,jdbcType=NUMERIC},NOTE=#{note,jdbcType=VARCHAR},PINYIN=#{pinyin,jdbcType=VARCHAR},FIRST_LETTER=#{firstLetter,jdbcType=VARCHAR},SYSTEM_ID=#{systemId,jdbcType=VARCHAR},STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
+	</sql>
+
+    <sql id="updateStatusId">
+		STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
+	</sql>
+	
+	
+	<resultMap type="com.hisign.sso.api.entity.sys.Organise" id="organiseMap">
+		<result property="orgId" column="ORG_ID" />
+		<result property="name" column="ORG_NAME" />
+		<result property="orgCode" column="ORG_CODE" />
+		<result property="superId" column="SUPER_ID" />
+		<result property="systemId" column="SYSTEM_ID" />
+		<result property="type" column="TYPE" />
+		<result property="note" column="NOTE" />
+		<result property="pinyin" column="PINYIN" />
+		<result property="firstLetter" column="FIRST_LETTER" />
+		<result property="status" column="STATUS" />
+		<result property="createAccount" column="CREATE_ACCOUNT" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="lastModifyAccount" column="LAST_MODIFY_ACCOUNT" />
+		<result property="lastModifyTime" column="LAST_MODIFY_TIME" />
+		<result property="lastTerminal" column="LAST_TERMINAL" />
+		<result property="lastSys" column="LAST_SYS" />
+	</resultMap>
+
+</mapper>

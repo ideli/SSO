@@ -1,0 +1,22 @@
+接口类：com.hisign.sso.api.service.sys.TokenService
+方法：checkToken
+参数：
+String token, 从客户端请求中取到的Token，未取到传""。
+String sysCode, 业务系统的系统编码，如"XCKY"，对应统一认证平台表uaop_service_resource的SYSTEM_ID字段。
+String serviceCode 服务编码，用于权限控制，对应统一认证平台表uaop_service_resource的RESOURCE_ID字段。
+返回JSON字符串：
+TOKEN有效返回：
+{
+    "rspCode": "0000"
+}
+TOKEN无效返回：
+{
+    "rspCode": "1001",
+    "loginRestUrl": "http://127.0.0.1:8811/ssorest/sys/login.json"
+}
+rspCode含义：
+1001：TOKEN不存在
+1002：TOKEN过期
+2000：其他错误
+
+

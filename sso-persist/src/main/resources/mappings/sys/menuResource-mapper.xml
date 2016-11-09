@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.MenuResourceMapper">
+	
+	<!-- 查询所有符合条件的 -->
+	<select id="find" resultMap="menuResourceMap" parameterType="MenuResource">
+		select
+			<include refid="selectId" />
+		from uaop_menu_resource
+		<where>
+			SYSTEM_ID=#{systemId} order by ORDER_NUM
+		</where>
+	</select>
+	
+	<!-- 增加信息 -->
+	<insert id="add" parameterType="MenuResource">
+		insert into UAOP_MENU_RESOURCE (
+		<include refid="selectId" />
+		)
+		values (
+		<include refid="insertId" />
+		)
+	</insert>
+
+	<!-- 批量增加信息 -->
+	<insert id="addBatch" parameterType="java.util.List">
+		BEGIN
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			insert into UAOP_MENU_RESOURCE (
+			<include refid="selectId" />
+			)
+			values
+			(
+			<include refid="insertBatchId" />
+			)
+		</foreach>
+		;
+		END;
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="MenuResource">
+		update UAOP_MENU_RESOURCE
+		<set>
+			<include refid="updateId" />
+		</set>
+		where SYSTEM_ID=#{systemId} and RESOURCE_ID=#{resourceId}
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="MenuResource">
+		delete from UAOP_MENU_RESOURCE where SYSTEM_ID=#{systemId} and RESOURCE_ID=#{resourceId}
+	</delete>
+
+	<!-- 根据主键查询 -->
+	<select id="getById" resultMap="menuResourceMap" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		from UAOP_MENU_RESOURCE
+		<where>
+			SYSTEM_ID=#{systemId} and RESOURCE_ID=#{resourceId}
+		</where>
+	</select>
+	
+	<!-- 获取某菜单下的子菜单资源-->
+	<select id="getChildMenuResources" resultMap="menuResourceMap" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		from UAOP_MENU_RESOURCE
+		<where>
+			SYSTEM_ID=#{systemId} and SUPER_ID=#{superId} order by ORDER_NUM
+		</where>
+	</select>
+
+	<sql id="clausePage">
+		from UAOP_MENU_RESOURCE
+		<where>
+			<if test="resourceName != null and resourceName != ''">
+				and RESOURCE_NAME like '%'||#{resourceName}||'%'
+			</if>
+		</where>
+		order by orderNum
+	</sql>
+
+	<select id="query" resultMap="menuResourceMap" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		<include refid="clausePage" />
+	</select>
+
+	<select id="count" resultType="Integer" parameterType="java.util.HashMap">
+		select
+		count(0)
+		<include refid="clausePage" />
+	</select>
+	
+	<!-- 根据SystemId查询 -->
+	<select id="getAllBySystemId" resultMap="menuResourceMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_MENU_RESOURCE
+		<where>
+			SYSTEM_ID=#{systemId} order by ORDER_NUM
+		</where>
+	</select>
+	
+	<!-- 根据账号获取其拥有权限的某个系统的所有菜单 -->
+	<select id="getAuthedMenusByAccount" resultMap="menuResourceMap" parameterType="java.util.HashMap">
+		select 
+          <include refid="menuSelectId" />
+		  from uaop_menu_resource m,
+		       uaop_role_resource rr,
+		       uaop_sysuser_role  sr
+		  where m.system_id=#{systemId}
+		        and m.resource_id=rr.resource_id
+		        and rr.resource_type=0
+		        and rr.role_id=sr.role_id
+		        and sr.account=#{account}
+		        order by m.ORDER_NUM
+	</select>
+	
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		SYSTEM_ID,RESOURCE_ID,RESOURCE_NAME,SUPER_ID,URL,ICON,VISIBLE_STATE,ORDER_NUM,NOTE
+	</sql>
+	
+	<sql id="menuSelectId">
+		m.SYSTEM_ID,m.RESOURCE_ID,m.RESOURCE_NAME,m.SUPER_ID,m.URL,m.ICON,m.VISIBLE_STATE,m.ORDER_NUM,m.NOTE
+	</sql>
+
+	<sql id="insertId">
+		#{systemId,jdbcType=VARCHAR},#{resourceId,jdbcType=VARCHAR},#{resourceName,jdbcType=VARCHAR},#{superId,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},#{icon,jdbcType=VARCHAR},#{visibleState,jdbcType=NUMERIC},#{orderNum,jdbcType=NUMERIC},#{note,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="insertBatchId">
+		#{item.systemId,jdbcType=VARCHAR},#{item.resourceId,jdbcType=VARCHAR},#{item.resourceName,jdbcType=VARCHAR},#{item.superId,jdbcType=VARCHAR},#{item.url,jdbcType=VARCHAR},#{item.icon,jdbcType=VARCHAR},#{item.visibleState,jdbcType=NUMERIC},#{item.orderNum,jdbcType=NUMERIC},#{item.note,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="updateId">
+		RESOURCE_NAME=#{resourceName,jdbcType=VARCHAR},URL=#{url,jdbcType=VARCHAR},ICON=#{icon,jdbcType=VARCHAR},VISIBLE_STATE=#{visibleState,jdbcType=NUMERIC},ORDER_NUM=#{orderNum,jdbcType=NUMERIC},NOTE=#{note,jdbcType=VARCHAR}
+	</sql>
+
+	<resultMap type="com.hisign.sso.api.entity.sys.MenuResource" id="menuResourceMap">
+		<result property="systemId" column="SYSTEM_ID" />
+		<result property="resourceId" column="RESOURCE_ID" />
+		<result property="resourceName" column="RESOURCE_NAME" />
+		<result property="superId" column="SUPER_ID" />
+		<result property="url" column="URL" />
+		<result property="icon" column="ICON" />
+		<result property="visibleState" column="VISIBLE_STATE" />
+		<result property="orderNum" column="ORDER_NUM" />
+		<result property="note" column="NOTE" />
+	</resultMap>
+	
+</mapper>

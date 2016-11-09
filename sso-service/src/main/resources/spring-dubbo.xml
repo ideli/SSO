@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jaxws="http://cxf.apache.org/jaxws" 
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws
+		http://cxf.apache.org/schemas/jaxws.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context  
+      	http://www.springframework.org/schema/context/spring-context.xsd
+        ">
+	
+	<dubbo:application name="UAOP" />
+	<dubbo:registry protocol="zookeeper" address="${zkconnect}" />
+	<!-- 去除默认的dubbo异常处理器 -->
+    <dubbo:provider filter="-exception"/>
+    
+    <dubbo:service interface="com.hisign.sso.api.service.sys.LoginService" protocol="rmi" ref="loginService" />
+    
+    <!-- -->
+    <dubbo:service interface="com.hisign.sso.api.service.sys.UserService" protocol="rmi" ref="userService" />
+    
+    <dubbo:service interface="com.hisign.sdk.api.service.CacheLoader" protocol="rmi" ref="cacheLoader" />
+    
+	<dubbo:service interface="com.hisign.sso.api.service.sys.ShiroLoginService" protocol="rmi" ref="shiroLoginService" />
+	<dubbo:service interface="com.hisign.sso.api.service.sys.ShiroFilterChainService" protocol="rmi" ref="shiroFilterChainService" />
+	<dubbo:service interface="com.hisign.sso.api.service.sys.TokenService" protocol="rmi" ref="tokenService" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.OrganiseService"  ref="organiseService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.UserInfoService" ref="userInfoService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.UserOrganizationService" ref="userOrganizationService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.RoleService" ref="roleService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.SysUserRoleService" ref="sysUserRoleService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.MenuResourceService" ref="menuResourceService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.ServiceResourceService" ref="serviceResourceService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.RoleResourceService" ref="roleResourceService"  protocol="rmi" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.SysAccountService" ref="sysAccountService"  protocol="rmi" />
+	
+</beans>

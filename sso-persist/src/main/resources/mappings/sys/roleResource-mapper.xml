@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.RoleResourceMapper">
+
+	<!-- 增加信息 -->
+	<insert id="add" parameterType="RoleResource">
+		insert into UAOP_ROLE_RESOURCE (
+		<include refid="selectId" />
+		)
+		values (
+		<include refid="insertId" />
+		)
+	</insert>
+	
+	<!-- 批量增加信息 -->
+	<insert id="addBatch" parameterType="java.util.List">
+		BEGIN
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			insert into UAOP_ROLE_RESOURCE (
+			<include refid="selectId" />
+			)
+			values
+			(
+			<include refid="insertBatchId" />
+			)
+		</foreach>
+		;
+		END;
+	</insert>
+	
+	<!-- 修改 -->
+	<update id="update" parameterType="RoleResource">
+		update UAOP_ROLE_RESOURCE set PRIVILEGE_VALUE=#{privilegeValue} where ID=#{id}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="String">
+		delete from UAOP_ROLE_RESOURCE where ID=#{id}
+	</delete>
+	
+	<!-- 根据主键查询 -->
+	<select id="getById" resultMap="roleResourceMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_ROLE_RESOURCE
+		<where>
+			ID=#{id}
+		</where>
+	</select>
+	
+	<sql id="clausePage">
+		from UAOP_ROLE_RESOURCE
+		<where>
+			<if test="systemId != null and systemId != ''">
+				and SYSTEM_ID=#{systemId}
+			</if>
+			<if test="roleId != null and roleId != ''">
+				and ROLE_ID=#{roleId}
+			</if>
+			<if test="resourceId != null and resourceId != ''">
+				and RESOURCE_ID=#{resourceId}
+			</if>
+			<if test="resourceType != null and resourceType != ''">
+				and RESOURCE_TYPE=#{resourceType}
+			</if>
+		</where>
+	</sql>
+
+	<select id="query" resultMap="roleResourceMap" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		<include refid="clausePage" />
+	</select>
+
+	<select id="count" resultType="Integer" parameterType="java.util.HashMap">
+		select
+		count(0)
+		<include refid="clausePage" />
+	</select>
+	
+	
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		ID,ROLE_ID,RESOURCE_ID,RESOURCE_TYPE,PRIVILEGE_VALUE,SYSTEM_ID
+	</sql>
+
+	<sql id="insertId">
+		#{id,jdbcType=NUMERIC},#{roleId,jdbcType=VARCHAR},#{resourceId,jdbcType=VARCHAR},#{resourceType,jdbcType=NUMERIC},#{privilegeValue,jdbcType=NUMERIC},#{systemId,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="insertBatchId">
+		#{item.id,jdbcType=NUMERIC},#{item.roleId,jdbcType=VARCHAR},#{item.resourceId,jdbcType=VARCHAR},#{item.resourceType,jdbcType=NUMERIC},#{item.privilegeValue,jdbcType=NUMERIC},#{item.systemId,jdbcType=VARCHAR}
+	</sql>
+
+	<resultMap type="com.hisign.sso.api.entity.sys.RoleResource" id="roleResourceMap">
+	    <result property="id" column="ID" />
+	    <result property="systemId" column="SYSTEM_ID" />
+		<result property="roleId" column="ROLE_ID" />
+		<result property="resourceId" column="RESOURCE_ID" />
+		<result property="resourceType" column="RESOURCE_TYPE" />
+		<result property="privilegeValue" column="PRIVILEGE_VALUE" />
+	</resultMap>
+
+</mapper>

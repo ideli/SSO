@@ -1,0 +1,118 @@
+HTTP头:
+systemid: null22
+token: 96a2e6e34e2941b21f5aa737ee0828b5
+Content-Type: application/json
+
+
+增加
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/add.json
+报文:
+{
+  "userId": "str",
+  "userName": "str",
+  "sex": 0,
+  "cid": "str",
+  "isPolice": 0,
+  "policeId": "str",
+  "status": 0,
+  "createAccount": "str",
+  "createTime": 0,
+  "lastModifyTime": 0
+}
+
+
+批量增加
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/addBatch.json
+报文:
+[
+  {
+    "userId": "str2",
+    "userName": "str",
+    "sex": 0,
+    "cid": "str",
+    "isPolice": 0,
+    "policeId": "str",
+    "status": 0,
+    "createAccount": "str",
+    "createTime": 0,
+    "lastModifyTime": 0
+  },
+  {
+    "userId": "str3",
+    "userName": "str",
+    "sex": 0,
+    "cid": "str",
+    "isPolice": 0,
+    "policeId": "str",
+    "status": 0,
+    "createAccount": "str",
+    "createTime": 0,
+    "lastModifyTime": 0
+  }
+]
+
+
+删除
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/delete/str.json
+报文:无
+
+
+修改
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/update.json
+报文:
+{
+    "userId": "str3",
+    "userName": "str3",
+    "sex": 0,
+    "cid": "str",
+    "isPolice": 0,
+    "policeId": "str",
+    "status": 0,
+    "createAccount": "str",
+    "createTime": 0,
+    "lastModifyTime": 0
+}
+
+根据ID查询
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/getById/str2
+报文:无
+返回报文:{"userId":"str2","userName":"str","sex":0,"cid":"str","isPolice":0,"policeId":"str","status":0,"createAccount":"str","createTime":0,"lastModifyTime":0}
+
+
+
+根据账号查询
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/getByAccount/admin
+报文:无
+返回报文:{"userId":"str3","userName":"str3","sex":0,"cid":"str","isPolice":0,"policeId":"str","status":0,"createAccount":"str","createTime":0,"lastModifyTime":0}
+
+
+条件查询
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/query
+报文:
+{
+    "userName": "st",
+    "sex": 0
+}
+返回报文:[{"userId":"str2","userName":"str","sex":0,"cid":"str","isPolice":0,"policeId":"str","status":0,"createAccount":"str","createTime":0,"lastModifyTime":0},{"userId":"str3","userName":"str3","sex":0,"cid":"str","isPolice":0,"policeId":"str","status":0,"createAccount":"str","createTime":0,"lastModifyTime":0}]
+
+
+分页条件查询
+URL:
+http://127.0.0.1:8811/ssorest/userInfo/queryByPagination
+报文:
+{
+    "userName": "st",
+    "pageNum": 1,
+    "pageSize": 10,
+    "orderBy": "user_id desc",
+    "sex": 0
+}
+返回报文:[{"userId":"str3","userName":"str3","sex":0,"cid":"str","isPolice":0,"policeId":"str","status":0,"createAccount":"str","createTime":0,"lastModifyTime":0},{"userId":"str2","userName":"str","sex":0,"cid":"str","isPolice":0,"policeId":"str","status":0,"createAccount":"str","createTime":0,"lastModifyTime":0}]
+

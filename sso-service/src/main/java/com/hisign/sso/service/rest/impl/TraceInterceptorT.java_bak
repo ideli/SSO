@@ -1,0 +1,134 @@
+/**
+ * 
+ */
+package com.hisign.sso.service.rest.impl;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.ext.ReaderInterceptor;
+import javax.ws.rs.ext.ReaderInterceptorContext;
+import javax.ws.rs.ext.WriterInterceptor;
+import javax.ws.rs.ext.WriterInterceptorContext;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hisign.aes.AESCoder;
+import com.hisign.rsa.RSACoderForServer;
+import com.hisign.sdk.common.CustomServiceLayerException;
+import com.hisign.sdk.common.util.StringUtils;
+import com.hisign.sso.common.OutputStreamWrapper;
+
+/**
+ * 日志记录的拦截器
+ * @author chailiangzhi
+ * @date 2015-12-26
+ * 
+ */
+@Priority(Priorities.USER)
+public class TraceInterceptorT implements ReaderInterceptor, WriterInterceptor {
+
+	/**
+	 * 
+	 */
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+
+	/* (non-Javadoc)
+	 * @see javax.ws.rs.ext.ReaderInterceptor#aroundReadFrom(javax.ws.rs.ext.ReaderInterceptorContext)
+	 */
+	public Object aroundReadFrom(ReaderInterceptorContext readerInterceptorContext) throws IOException,
+			WebApplicationException {
+		//		String token = "";
+
+		byte[] buffer = IOUtils.toByteArray(readerInterceptorContext.getInputStream());
+		String reqMsg = new String(buffer, "UTF-8");
+		logger.info("request body is: \n" + reqMsg + "\n");
+		JSONObject reqJson = JSONObject.fromObject(reqMsg);
+		//		JSONObject reqHeadJson = reqJson.getJSONObject("reqHead");
+		reqMsg = decryptMsg(reqJson);
+
+		readerInterceptorContext.setInputStream(new ByteArrayInputStream(reqMsg.getBytes("UTF-8")));
+		Object ret = readerInterceptorContext.proceed();
+
+		return ret;
+	}
+
+	/**
+	 * 解密
+	 * @param reqMsg
+	 */
+	private String decryptMsg(JSONObject reqJson) throws IOException {
+		// 解密
+		/* */
+		byte[] privateKey = RSACoderForServer.getPrivateKey("conf/privateKey");
+		JSONObject reqHeadJson = reqJson.getJSONObject("reqHead");
+		String secretKeyRsa = reqHeadJson.optString("secretKey");
+		if (StringUtils.isEmpty(secretKeyRsa)) {
+			String reqBodyOld = reqJson.getString("reqBody");
+			reqJson.put("reqBody", jsonObjToStr(reqBodyOld));
+			String reqMsg = reqJson.toString();
+			return reqMsg;
+		}
+		String secretKey;
+		try {
+			secretKey = RSACoderForServer.decryptByPrivateKey(secretKeyRsa, privateKey);
+		} catch (Exception e) {
+			logger.error("非对称解密失败", e);
+			throw new CustomServiceLayerException("非对称解密失败", e);
+		}
+		logger.info("secretKey is:{}", secretKey);
+		String key = AESCoder.getKey();
+		String reqBodyEn = reqJson.getString("reqBody");
+		String reqBodyDe = AESCoder.decrypt(reqBodyEn, key);
+		logger.info("reqBodyDe is:{}", reqBodyDe);
+		reqJson.put("reqBody", jsonObjToStr(reqBodyDe));
+		String reqMsg = reqJson.toString();
+		return reqMsg;
+
+	}
+
+	/**
+	 * @param body
+	 * @return
+	 */
+	private String jsonObjToStr(String body) {
+		return "\"" + body.replaceAll("\r", "\\r").replaceAll("\n", "\\n").replaceAll("\t", "\\t") + "\"";
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.ws.rs.ext.WriterInterceptor#aroundWriteTo(javax.ws.rs.ext.WriterInterceptorContext)
+	 */
+	public void aroundWriteTo(WriterInterceptorContext writerInterceptorContext) throws IOException,
+			WebApplicationException {
+		OutputStreamWrapper wrapper = new OutputStreamWrapper(writerInterceptorContext.getOutputStream());
+		// OutputStreamEncryptWrapper
+		writerInterceptorContext.setOutputStream(wrapper);
+		writerInterceptorContext.proceed();
+		//		LogReq logReq = new LogReq();
+		String rspMsg = new String(wrapper.getBytes(), "UTF-8");
+		//		JSONObject reqJson = JSONObject.fromObject(rspMsg);
+
+		//		JsonUtil.checkJSONObject(reqJson);
+		//		JSONObject reqHeadJson = reqJson.getJSONObject("rspHead");
+		//		String sn=reqHeadJson.getString("serialNumber");
+		//		logReq.setEndTime(String.valueOf(new Date().getTime()));
+		//		logReq.setSn(sn);
+		//		logReq.setMsgRsp(rspMsg);
+		//		try {
+		//			if (writerInterceptorContext.getProperty("error") == null) {
+		//				logReqMapper.update(logReq);
+		//			}
+		//		} catch (Exception e) {
+		//			e.printStackTrace();
+		//		}
+		logger.info("response body is: \n" + rspMsg + "\n");
+	}
+
+}

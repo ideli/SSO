@@ -1,0 +1,12 @@
+GET
+URL:
+http://127.0.0.1:58811/api/sys/logout
+
+
+请求头：
+systemid: alims
+token: 22193205db596ea2d5e3efd08181fa8d
+
+响应：
+{"message":"成功"}
+

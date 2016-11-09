@@ -1,0 +1,15 @@
+//ª˘¥°≈‰÷√
+	private static final String IMPALAD_HOST = "192.168.1.104";
+	private static final String IMPALAD_JDBC_PORT = "21050";
+	private static final String CONNECTION_URL = "jdbc:hive2://" + IMPALAD_HOST + ':' + IMPALAD_JDBC_PORT + "/;auth=noSasl;";
+	private static final String JDBC_DRIVER_NAME = "org.apache.hive.jdbc.HiveDriver";
+	
+	//SQL”Ôæ‰
+	private static final String SQL_STATEMENTIn = "select distinct(c.bank_card_number) from phonefraud.parquet_all_trading p join phonefraud.card_num c on c.bank_card_number=p.bank_card_number";
+	//≤È—Ø∂‘∑Ω’À∫≈
+	private static final String SQL_STATEMENTIn_F = "select distinct(c.bank_card_number) from phonefraud.parquet_all_trading p join phonefraud.card_num c on c.bank_card_number=p.target_bank_card_number";
+	//private static final String SQL_STATEMENTIn = "select distinct(c.bank_card_number) from phonefraud.parquet_all_trading p join phonefraud.card_num c on c.bank_card_number=p.target_bank_card_number";
+
+	private static final String SQL_STATEMENTAll = "select * from phonefraud.card_num";
+	public static Connection con = null;
+	public static Statement stmt = null;

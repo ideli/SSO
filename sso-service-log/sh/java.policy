@@ -1,0 +1,8 @@
+grant  {
+	permission java.security.AllPermission;
+};
+
+grant {
+   permission com.sun.rmi.rmid.ExecOptionPermission "-Djava.*";
+   permission com.sun.rmi.rmid.ExecOptionPermission "-Dsun.*";
+};

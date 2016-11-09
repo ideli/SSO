@@ -1,0 +1,202 @@
+body {
+  font-family: "Microsoft Yahei";
+}
+.box {
+  width: 1366px;
+  height: 345px;
+  margin: 0 auto;
+}
+.top {
+  width: 100%;
+  height: 88px;
+  border-bottom: 1px solid #E5E5E5;
+  padding-left: 166px;
+  padding-right: 171px;
+}
+.top .logo {
+  width: 100%;
+  height: 87px;
+  background: url("../../../../css/images/register/logo.jpg") no-repeat left top;
+}
+.top .logo ul {
+  float: right;
+  padding-top: 23px;
+}
+.bottom {
+  width: 100%;
+  padding: 40px 186px 0px 186px;
+}
+.bottom .step {
+  width: 100%;
+  height: 38px;
+  margin-bottom: 37px;
+}
+.bottom .step .s1 {
+  float: left;
+  width: 675px;
+  height: 38px;
+  line-height: 38px;
+  background: #6398CE;
+  position: relative;
+  padding-left: 15px;
+  color: #FFFFFF;
+}
+.bottom .step .s1 span {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: #FFFEFF;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  margin-right: 11px;
+  color: #6198CE;
+}
+.bottom .step .s1 .triangle {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border: 19px solid transparent;
+  border-left-color: #6398CE;
+  right: -38px;
+  bottom: 0px;
+}
+.bottom .step .s2 {
+  float: right;
+  width: 295px;
+  height: 38px;
+  line-height: 38px;
+  background: #DBDBDB;
+  position: relative;
+  padding-left: 16px;
+  color: #ADB2B6;
+}
+.bottom .step .s2 span {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: #FFFEFF;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50%;
+  margin-right: 11px;
+  color: #ADB2B6;
+}
+.bottom .step .s2 .triangle2 {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border: 19px solid transparent;
+  border-top-color: #DBDBDB;
+  left: -20px;
+  bottom: 0px;
+}
+.bottom .step .s2 .triangle3 {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border: 19px solid transparent;
+  border-bottom-color: #DBDBDB;
+  left: -20px;
+  bottom: 0px;
+}
+.bottom .info {
+  width: 732px;
+  float: left;
+}
+.bottom .info ul li {
+  line-height: 32px;
+  margin-bottom: 20px;
+}
+.bottom .info ul li label {
+  width: 94px;
+  display: inline-block;
+  font-size: 14px;
+  text-align: right;
+  margin-right: 13px;
+}
+.bottom .info ul li label span {
+  color: red;
+}
+.bottom .info ul li input[type="text"] {
+  width: 357px;
+  height: 30px;
+  border: 1px solid #DADADA;
+  margin-right: 6px;
+  font-size: 12px;
+  padding-left: 12px;
+}
+.bottom .info ul li input[type="password"] {
+  width: 357px;
+  height: 30px;
+  border: 1px solid #DADADA;
+  margin-right: 6px;
+  font-size: 12px;
+  padding-left: 12px;
+}
+.bottom .info ul li p {
+  display: inline-block;
+  height: 14px;
+  line-height: 14px;
+  padding-left: 20px;
+  font-size: 12px;
+  display: none;
+  background: url("../../../../css/images/register/tip.png") no-repeat 0px 0px;
+}
+.bottom .info ul li p.right {
+  background: url("../../../../css/images/register/tip.png") no-repeat 0px -14px;
+  display: inline-block;
+}
+.bottom .info ul li h1 {
+  margin-left: 107px;
+  float: left;
+}
+.bottom .info ul li h1 em {
+  display: inline-block;
+  width: 116px;
+  line-height: 18px;
+  text-align: center;
+  font-size: 12px ;
+  font-style: normal;
+  color: #FFFFFF;
+  background: #D8D8D8;
+  border: 1px solid #D3D3D3;
+  margin-right: 4px;
+}
+.bottom .info ul li h1 em.on {
+  background: #EFAD4D;
+}
+.bottom .info ul li input[type="button"] {
+  width: 118px;
+  height: 35px;
+  background: #FF8333;
+  border: none;
+  color: #ffffff;
+  border-radius: 2px;
+}
+.bottom .info ul li.password {
+  margin-bottom: 3px;
+}
+.bottom .info ul li.strong {
+  line-height: 18px;
+  margin-bottom: 22px;
+}
+.bottom .tip {
+  width: 261px;
+  float: left;
+  height: 418px;
+  padding: 2px 28px 0px 28px;
+  border-left: 1px solid #E5E5E5;
+}
+.bottom .tip h1 {
+  height: 16px;
+  line-height: 16px;
+  color: #FF6602;
+  font-size: 16px;
+  margin-bottom: 15px ;
+}
+.bottom .tip p {
+  font-size: 12px;
+  color: #666666;
+  line-height: 24px;
+}

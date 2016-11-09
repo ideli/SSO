@@ -1,0 +1,33 @@
+POST
+URL:
+http://127.0.0.1:8811/api/sys/users/add
+
+请求头：
+Content-Type: application/json
+systemId: alims
+
+请求：
+{
+    "account": "wb",
+    "pass": "123456",
+    "userName": "测试用户wb",
+    "cid": "110111201607160001",
+    "policeId": "030601",
+    "contact": "13810338888",
+    "orgId": "afdafdafda"
+}
+
+
+响应：
+{
+    "userId": "1471348948870",
+    "account": "wb",
+    "pass": "123456",
+    "userName": "测试用户wb",
+    "cid": "110111201607160001",
+    "policeId": "030601",
+    "contact": "13810338888",
+    "orgId": "afdafdafda"
+}
+
+

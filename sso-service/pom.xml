@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.hisign</groupId>
+    <artifactId>sso-root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>com.hisign</groupId>
+  <artifactId>sso-service</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>sso-service</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>com.hisign</groupId>
+	  <artifactId>sso-persist</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <!-- 如果要使用tomcat server -->
+	<dependency>
+		<groupId>org.apache.tomcat.embed</groupId>
+		<artifactId>tomcat-embed-core</artifactId>
+		<version>7.0.55</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.tomcat.embed</groupId>
+		<artifactId>tomcat-embed-logging-juli</artifactId>
+		<version>7.0.55</version>
+	</dependency>
+  </dependencies>
+  <build>
+  	<plugins>
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>  
+		  <artifactId>maven-jar-plugin</artifactId>  
+		  <configuration>  
+			<archive>  
+			  <manifest>  
+				<addClasspath>true</addClasspath>  
+				<classpathPrefix></classpathPrefix>  
+			  </manifest>  
+			</archive>
+		  </configuration>  
+		</plugin>  
+		<plugin>  
+		    <artifactId>maven-assembly-plugin</artifactId>  
+		    <executions>  <!--执行器 mvn assembly:assembly-->  
+		        <execution>  
+		            <id>service-zip</id><!--名字任意 -->    
+		        <phase>package</phase><!-- 绑定到package生命周期阶段上 -->    
+		        <goals>    
+		           <goal>single</goal><!-- 只运行一次 -->    
+		        </goals>    
+		            <configuration>  
+		                     <descriptors> <!--描述文件路径-->  
+		                          <descriptor>zip.xml</descriptor>  
+		                    </descriptors>  
+		            </configuration>  
+		        </execution>  
+		    </executions>  
+		 </plugin>  
+	</plugins>
+  </build>
+</project>

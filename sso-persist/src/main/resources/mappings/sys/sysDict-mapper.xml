@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.SysDictMapper">
+	
+	<!--mybatis ehcache缓存配置 -->
+	<!-- 以下两个<cache>标签二选一,第一个可以输出日志,第二个不输出日志  -->
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+	<!-- <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> -->
+	<!-- 查询所有符合条件的 -->
+	<select id="find" resultMap="sysDictMap" parameterType="SysDict">
+		select
+			dict_key,
+			parent_key,
+			dict_value1,
+			dict_py
+		from UAOP_SYS_DICT
+		<where>
+			<if test="sysCode != null and sysCode != ''">
+				and SYS_CODE = #{sysCode}
+			</if>
+			<if test="dictKey != null and dictKey != ''">
+				and dict_key = #{dictKey}
+			</if>
+			<if test="parentKey != null and parentKey != ''">
+				and parent_key = #{parentKey}
+			</if>
+			<if test="rootKey != null and rootKey != ''">
+				and root_key = #{rootKey}
+			</if>
+			and open_flag='1'
+		</where>
+		order by dict_sort
+	</select>
+	
+	
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		ID,SYS_CODE,DICT_LEVEL,DICT_KEY,PARENT_KEY,ROOT_KEY,DICT_VALUE1,DICT_VALUE2,DICT_VALUE3,LEAF_FLAG,DOWNLOAD_FLAG,READONLY_FLAG,DICT_SORT,DICT_PY,OPEN_FLAG,REMARK,CREATE_USER,CREATE_DATETIME,UPDATE_USER,UPDATE_DATETIME
+	</sql>
+	
+	<sql id="insertId">
+		#{id,jdbcType=CHAR},#{sysCode,jdbcType=VARCHAR},#{dictLevel,jdbcType=VARCHAR},#{dictKey,jdbcType=VARCHAR},#{parentKey,jdbcType=VARCHAR},#{rootKey,jdbcType=VARCHAR},#{dictValue1,jdbcType=VARCHAR},#{dictValue2,jdbcType=VARCHAR},#{dictValue3,jdbcType=VARCHAR},#{leafFlag,jdbcType=VARCHAR},#{downloadFlag,jdbcType=VARCHAR},#{readonlyFlag,jdbcType=VARCHAR},#{dictSort,jdbcType=NUMERIC},#{dictPy,jdbcType=VARCHAR},#{openFlag,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{createUser,jdbcType=VARCHAR},#{createDatetime,jdbcType=DATE},#{updateUser,jdbcType=VARCHAR},#{updateDatetime,jdbcType=DATE}
+	</sql>
+	
+	<sql id="insertBatchId">
+		#{item.id,jdbcType=CHAR},#{item.sysCode,jdbcType=VARCHAR},#{item.dictLevel,jdbcType=VARCHAR},#{item.dictKey,jdbcType=VARCHAR},#{item.parentKey,jdbcType=VARCHAR},#{item.rootKey,jdbcType=VARCHAR},#{item.dictValue1,jdbcType=VARCHAR},#{item.dictValue2,jdbcType=VARCHAR},#{item.dictValue3,jdbcType=VARCHAR},#{item.leafFlag,jdbcType=VARCHAR},#{item.downloadFlag,jdbcType=VARCHAR},#{item.readonlyFlag,jdbcType=VARCHAR},#{item.dictSort,jdbcType=NUMERIC},#{item.dictPy,jdbcType=VARCHAR},#{item.openFlag,jdbcType=VARCHAR},#{item.remark,jdbcType=VARCHAR},#{item.createUser,jdbcType=VARCHAR},#{item.createDatetime,jdbcType=DATE},#{item.updateUser,jdbcType=VARCHAR},#{item.updateDatetime,jdbcType=DATE}
+	</sql>
+	
+	<sql id="updateId">
+		ID=#{id,jdbcType=CHAR},SYS_CODE=#{sysCode,jdbcType=VARCHAR},DICT_LEVEL=#{dictLevel,jdbcType=VARCHAR},DICT_KEY=#{dictKey,jdbcType=VARCHAR},PARENT_KEY=#{parentKey,jdbcType=VARCHAR},ROOT_KEY=#{rootKey,jdbcType=VARCHAR},DICT_VALUE1=#{dictValue1,jdbcType=VARCHAR},DICT_VALUE2=#{dictValue2,jdbcType=VARCHAR},DICT_VALUE3=#{dictValue3,jdbcType=VARCHAR},LEAF_FLAG=#{leafFlag,jdbcType=VARCHAR},DOWNLOAD_FLAG=#{downloadFlag,jdbcType=VARCHAR},READONLY_FLAG=#{readonlyFlag,jdbcType=VARCHAR},DICT_SORT=#{dictSort,jdbcType=NUMERIC},DICT_PY=#{dictPy,jdbcType=VARCHAR},OPEN_FLAG=#{openFlag,jdbcType=VARCHAR},REMARK=#{remark,jdbcType=VARCHAR},CREATE_USER=#{createUser,jdbcType=VARCHAR},CREATE_DATETIME=#{createDatetime,jdbcType=DATE},UPDATE_USER=#{updateUser,jdbcType=VARCHAR},UPDATE_DATETIME=#{updateDatetime,jdbcType=DATE}
+	</sql>
+
+	<resultMap type="SysDict" id="sysDictMap"><result property="id" column="ID" /><result property="sysCode" column="SYS_CODE" /><result property="dictLevel" column="DICT_LEVEL" /><result property="dictKey" column="DICT_KEY" /><result property="parentKey" column="PARENT_KEY" /><result property="rootKey" column="ROOT_KEY" /><result property="dictValue1" column="DICT_VALUE1" /><result property="dictValue2" column="DICT_VALUE2" /><result property="dictValue3" column="DICT_VALUE3" /><result property="leafFlag" column="LEAF_FLAG" /><result property="downloadFlag" column="DOWNLOAD_FLAG" /><result property="readonlyFlag" column="READONLY_FLAG" /><result property="dictSort" column="DICT_SORT" /><result property="dictPy" column="DICT_PY" /><result property="openFlag" column="OPEN_FLAG" /><result property="remark" column="REMARK" /><result property="createUser" column="CREATE_USER" /><result property="createDatetime" column="CREATE_DATETIME" /><result property="updateUser" column="UPDATE_USER" /><result property="updateDatetime" column="UPDATE_DATETIME" /></resultMap>
+	
+</mapper>

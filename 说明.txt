@@ -1,0 +1,18 @@
+maven版本3.0.5。
+mybatis版本3.2.4。
+spring版本4.0.3.RELEASE。
+springmvc版本4.0.3.RELEASE。
+shiro（权限框架，类似spring security）版本1.2.3。
+dubbox版本2.8.4。
+
+
+dzpt-api放service层和web层之间的接口定义，和接口引用到的实体和参数类定义。
+dzpt-common放公用工具类，公共函数，公用常量变量等。
+dzpt-persist放持久层接口和编写SQL的XML文件，mybatis框架负责将XML文件的SQL与mapper接口定义进行绑定，不需要开发人员编写mapper接口的实现类。
+dzpt-service放业务层实现类，事务控制放在service层，采用dubbox框架发布服务供web层调用。
+dzpt-web放展现层Controller（Spring MVC框架）和JSP,js,css等前端代码。
+
+启动顺序：
+1.启动zookeeper，推荐版本：zookeeper-3.4.6。
+2.启动dzpt-service。
+3.启动dzpt-web所在的tomcat。

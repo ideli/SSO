@@ -1,0 +1,47 @@
+POST
+URL:
+http://127.0.0.1:8811/ssorest/sys/dict.json
+
+请求头：
+systemid: xcky
+token: 96a2e6e34e2941b21f5aa737ee0828b5
+Content-Type: application/json
+
+请求：
+{
+  "reqHead": {
+    "reqSn": "10001",
+    "reqTime": "20151223173601",
+    "apiCode": "sys.login",
+    "sysCode": "xcky",
+    "secretKey": ""
+  },
+  "reqBody": "{  \"sysCode\": \"系统代码\",  \"dictKey\": \"字典键\",  \"parentKey\": \"字典父键\",  \"rootKey\": \"字典类型\"}"
+}
+
+{
+  "reqHead": {
+    "reqSn": "10001",
+    "reqTime": "20151223173601",
+    "apiCode": "sys.login",
+    "sysCode": "xcky",
+    "secretKey": ""
+  },
+  "reqBody": "{  \"rootKey\": \"ZWTQFFDM\"}"
+}
+
+
+响应：
+{
+    "rspHead": {
+        "reqSn": "10001",
+        "rspTime": "20160725152010",
+        "response": {
+            "rspType": "0",
+            "rspCode": "0000",
+            "rspDesc": "获取成功"
+        },
+        "secretKey": ""
+    },
+    "rspBody": "[\n  {\n    \"dictKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"指纹提取方法\",\n    \"dictPy\": \"ZWTQFF\"\n  },\n  {\n    \"dictKey\": \"A01\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"直接照相\",\n    \"dictPy\": \"ZJZX\"\n  },\n  {\n    \"dictKey\": \"A02\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"粉末/胶带纸\",\n    \"dictPy\": \"FMJDZ\"\n  },\n  {\n    \"dictKey\": \"A03\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"粉末/照相\",\n    \"dictPy\": \"FMZX\"\n  },\n  {\n    \"dictKey\": \"A04\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"502/照相\",\n    \"dictPy\": \"ZX\"\n  },\n  {\n    \"dictKey\": \"A05\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"DFO/照相\",\n    \"dictPy\": \"ZX\"\n  },\n  {\n    \"dictKey\": \"A06\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"茚三酮/照相\",\n    \"dictPy\": \"YSTZX\"\n  },\n  {\n    \"dictKey\": \"A07\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"硝酸银/照相\",\n    \"dictPy\": \"XSYZX\"\n  },\n  {\n    \"dictKey\": \"A08\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"碘熏/照相\",\n    \"dictPy\": \"DXZX\"\n  },\n  {\n    \"dictKey\": \"A09\",\n    \"parentKey\": \"ZWTQFFDM\",\n    \"dictValue1\": \"其他/照相\",\n    \"dictPy\": \"QTZX\"\n  }\n]"
+}

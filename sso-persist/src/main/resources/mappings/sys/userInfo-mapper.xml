@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.UserInfoMapper">
+
+
+
+	<!-- 根据账号获取用户信息 -->
+	<select id="getByAccount" resultMap="userInfoMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_USER_INFO u where u.STATUS=0 and u.USER_ID=(select distinct
+		USER_ID FROM UAOP_SYSUSER where ACCOUNT=#{account})
+	</select>
+
+
+	<!-- 增加信息 -->
+	<insert id="add" parameterType="UserInfo">
+		insert into UAOP_USER_INFO (
+		<include refid="selectId" />
+		)
+		values (
+		<include refid="insertId" />
+		)
+	</insert>
+
+	<!-- 批量增加信息 -->
+	<insert id="addBatch" parameterType="java.util.List">
+		BEGIN
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			insert into UAOP_USER_INFO (
+			<include refid="selectId" />
+			)
+			values
+			(
+			<include refid="insertBatchId" />
+			)
+		</foreach>
+		;
+		END;
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="UserInfo">
+		update UAOP_USER_INFO
+		<set>
+			<if test="userName != null">
+				USER_NAME = #{userName},
+			</if>
+			<if test="sex != null">
+				SEX = #{sex},
+			</if>
+			<if test="cid != null">
+				CID = #{cid},
+			</if>
+			<if test="isPolice != null">
+				IS_POLICE = #{isPolice},
+			</if>
+			<if test="policeId != null">
+				POLICE_ID = #{policeId},
+			</if>
+			<if test="status != null">
+				STATUS = #{status},
+			</if>
+			<if test="lastModifyTime != null">
+				LAST_MODIFY_TIME = #{lastModifyTime},
+			</if>
+			<if test="contact != null">
+				CONTACT = #{contact},
+			</if>
+			<if test="avatar != null">
+				AVATAR = #{avatar},
+			</if>
+			<if test="extStr1 != null">
+				EXT_STR1 = #{extStr1},
+			</if>
+			<if test="extStr2 != null">
+				EXT_STR2 = #{extStr2},
+			</if>
+			<if test="extStr3 != null">
+				EXT_STR3 = #{extStr3},
+			</if>
+			<if test="lastModifyAccount != null">
+				LAST_MODIFY_ACCOUNT = #{lastModifyAccount},
+			</if>
+			<if test="lastTerminal != null">
+				LAST_TERMINAL = #{lastTerminal},
+			</if>
+			<if test="lastSys != null">
+				LAST_SYS = #{lastSys},
+			</if>
+			<if test="post != null">
+				POST = #{post},
+			</if>
+			<if test="birth != null">
+				BIRTH = #{birth},
+			</if>
+			<if test="poli != null">
+				POLI = #{poli},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone},
+			</if>
+			<if test="fax != null">
+				FAX = #{fax},
+			</if>
+			<if test="address != null">
+				ADDRESS = #{address},
+			</if>
+			<if test="zipcode != null">
+				ZIPCODE = #{zipcode},
+			</if>
+			<if test="province != null">
+				PROVINCE = #{province},
+			</if>
+			<if test="city != null">
+				CITY = #{city},
+			</if>
+			<if test="county != null">
+				COUNTY = #{county},
+			</if>
+		</set>
+		where USER_ID = #{userId}
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="String">
+		delete from UAOP_USER_INFO
+		where USER_ID=#{id}
+	</delete>
+
+	<!-- 查询所有符合条件的 -->
+	<select id="find" resultMap="userInfoMap" parameterType="UserInfo">
+		select
+		<include refid="selectId" />
+		from UAOP_USER_INFO
+		<where>
+			where STATUS=0
+			<if test="userName != null and userName != ''">
+				and USER_NAME like '%'||#{userName}||'%'
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据主键查询 -->
+	<select id="getById" resultMap="userInfoMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_USER_INFO
+		<where>
+			USER_ID=#{userId}
+		</where>
+	</select>
+
+	<sql id="clausePage">
+		from UAOP_USER_INFO
+		<where>
+			where STATUS=0
+			<if test="userName != null and userName != ''">
+				and USER_NAME like '%'||#{userName}||'%'
+			</if>
+			<if test="cid != null and cid != ''">
+				and CID=#{cid}
+			</if>
+			<if test="policeId != null and policeId != ''">
+				and POLICE_ID=#{policeId}
+			</if>
+			<if test="contact != null and contact != ''">
+				and CONTACT like '%'||#{contact}||'%'
+			</if>
+			<if test="status != null and status != ''">
+				and STATUS=#{status}
+			</if>
+			<if test="extStr1 != null and extStr1 != ''">
+				and EXT_STR1 like '%'||#{extStr1}||'%'
+			</if>
+			<if test="extStr2 != null and extStr2 != ''">
+				and EXT_STR2 like '%'||#{extStr2}||'%'
+			</if>
+			<if test="extStr3 != null and extStr3 != ''">
+				and EXT_STR3 like '%'||#{extStr3}||'%'
+			</if>
+		</where>
+	</sql>
+
+	<select id="query" resultMap="userInfoMap" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		<include refid="clausePage" />
+	</select>
+
+	<select id="count" resultType="Integer" parameterType="java.util.HashMap">
+		select
+		count(0)
+		<include refid="clausePage" />
+	</select>
+
+	<update id="updateStatusById" parameterType="UserInfo">
+		update UAOP_USER_INFO
+		<set>
+			<include refid="updateStatusId" />
+		</set>
+		where USER_ID=#{userId}
+	</update>
+
+	<!-- 根据userId列表批量更新状态 -->
+	<update id="updateStatusByIdList" parameterType="java.util.Map">
+		update UAOP_USER_INFO
+		<set>
+			<include refid="updateStatusId" />
+		</set>
+		where USER_ID in
+		<foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		USER_ID,USER_NAME,SEX,CID,IS_POLICE,POLICE_ID,CONTACT,AVATAR,POST,BIRTH,POLI,PHONE,FAX,ADDRESS,ZIPCODE,PROVINCE,CITY,COUNTY,EXT_STR1,EXT_STR2,EXT_STR3,STATUS,CREATE_ACCOUNT,CREATE_TIME,LAST_TERMINAL,LAST_SYS
+	</sql>
+
+	<sql id="insertId">
+		#{userId,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{sex,jdbcType=NUMERIC},#{cid,jdbcType=VARCHAR},#{isPolice,jdbcType=NUMERIC},#{policeId,jdbcType=VARCHAR},#{contact,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},#{post,jdbcType=VARCHAR},#{birth,jdbcType=NUMERIC},#{poli,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{fax,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{zipcode,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},#{county,jdbcType=VARCHAR},#{extStr1,jdbcType=VARCHAR},#{extStr2,jdbcType=VARCHAR},#{extStr3,jdbcType=VARCHAR},#{status,jdbcType=NUMERIC},#{createAccount,jdbcType=VARCHAR},#{createTime,jdbcType=NUMERIC},#{lastTerminal,jdbcType=VARCHAR},#{lastSys,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="insertBatchId">
+		#{item.userId,jdbcType=VARCHAR},#{item.userName,jdbcType=VARCHAR},#{item.sex,jdbcType=NUMERIC},#{item.cid,jdbcType=VARCHAR},#{item.isPolice,jdbcType=NUMERIC},#{item.policeId,jdbcType=VARCHAR},#{item.contact,jdbcType=VARCHAR},#{item.avatar,jdbcType=VARCHAR},#{item.post,jdbcType=VARCHAR},#{item.birth,jdbcType=NUMERIC},#{item.poli,jdbcType=VARCHAR},#{item.phone,jdbcType=VARCHAR},#{item.fax,jdbcType=VARCHAR},#{item.address,jdbcType=VARCHAR},#{item.zipcode,jdbcType=VARCHAR},#{item.province,jdbcType=VARCHAR},#{item.city,jdbcType=VARCHAR},#{item.county,jdbcType=VARCHAR},#{item.extStr1,jdbcType=VARCHAR},#{item.extStr2,jdbcType=VARCHAR},#{item.extStr3,jdbcType=VARCHAR},#{item.status,jdbcType=NUMERIC},#{item.createAccount,jdbcType=VARCHAR},#{item.createTime,jdbcType=NUMERIC},#{item.lastTerminal,jdbcType=VARCHAR},#{item.lastSys,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="updateStatusId">
+		STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
+	</sql>
+	
+	
+	<resultMap type="com.hisign.sso.api.entity.sys.UserInfo" id="userInfoMap">
+		<result property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="sex" column="SEX" />
+		<result property="cid" column="CID" />
+		<result property="isPolice" column="IS_POLICE" />
+		<result property="policeId" column="POLICE_ID" />
+		<result property="contact" column="CONTACT" />
+		<result property="avatar" column="AVATAR" />
+		<result property="post" column="POST" />
+		<result property="birth" column="BIRTH" />
+		<result property="poli" column="POLI" />
+		<result property="phone" column="PHONE" />
+		<result property="fax" column="FAX" />
+		<result property="address" column="ADDRESS" />
+		<result property="zipcode" column="ZIPCODE" />
+		<result property="province" column="PROVINCE" />
+		<result property="city" column="CITY" />
+		<result property="county" column="COUNTY" />
+		<result property="extStr1" column="EXT_STR1" />
+		<result property="extStr2" column="EXT_STR2" />
+		<result property="extStr3" column="EXT_STR3" />
+		<result property="status" column="STATUS" />
+		<result property="createAccount" column="CREATE_ACCOUNT" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="lastModifyAccount" column="LAST_MODIFY_ACCOUNT" />
+		<result property="lastModifyTime" column="LAST_MODIFY_TIME" />
+		<result property="lastTerminal" column="LAST_TERMINAL" />
+		<result property="lastSys" column="LAST_SYS" />
+	</resultMap>
+
+</mapper>

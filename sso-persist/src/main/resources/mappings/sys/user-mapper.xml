@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.UserMapper">
+
+	<select id="isCidExist" resultType="Integer" parameterType="String">
+		select count(0) from UAOP_USER_INFO where CID=#{cid}
+	</select>
+
+	<select id="isPoliceIdExist" resultType="Integer" parameterType="String">
+		select count(0) from UAOP_USER_INFO where POLICE_ID=#{policeId}
+	</select>
+	
+	<!--获取完整用户信息 -->
+	<select id="getUserById" resultMap="userMap" parameterType="String">
+		select
+		<include refid="userSelectId" />
+		from UAOP_USER_INFO i,UAOP_ORGANIZATION o,UAOP_USER_ORGANIZATION uo,UAOP_SYSUSER a
+		where i.STATUS=0 and i.USER_ID=#{userId} and
+		i.USER_ID=uo.USER_ID and uo.ORG_ID=o.ORG_ID and i.USER_ID=a.USER_ID
+	</select>
+	
+	<!--查询组织机构下的用户信息-->
+	<select id="getUsersUnderOrganise" resultMap="userMap" parameterType="java.util.Map">
+		select
+		<include refid="userSelectId" />
+		from UAOP_USER_INFO i,UAOP_ORGANIZATION o,UAOP_USER_ORGANIZATION uo,UAOP_SYSUSER a
+		where i.STATUS=0 and i.USER_ID=uo.USER_ID and uo.ORG_ID=o.ORG_ID and i.USER_ID=a.USER_ID
+		<if test="orgId != null and orgId != ''">
+			and o.ORG_ID = #{orgId}
+		</if>
+		<if test="orgCode != null and orgCode != ''">
+			and o.ORG_CODE = #{orgCode}
+		</if>
+		<if test="orgName != null and orgName != ''">
+			and o.ORG_NAME like
+			CONCAT(CONCAT('%',#{orgName}),'%') escape '\'
+		</if>
+		<if test="systemId != null and systemId != ''">
+			and o.SYSTEM_ID = #{systemId}
+		</if>
+	</select>
+	
+	<sql id="userSelectId">
+		i.USER_ID,
+		i.USER_NAME,
+		SEX,
+		CID,
+		POLICE_ID,
+		CONTACT,
+		AVATAR,
+		POST,
+		NVL((SELECT DICT_VALUE1 FROM UAOP_SYS_DICT  WHERE DICT_KEY=POST AND ROOT_KEY='PositionModel' AND ROWNUM=1),POST) as POST_NAME,
+		BIRTH,
+		POLI,
+		PHONE,
+		FAX,
+		ADDRESS,
+		ZIPCODE,
+		PROVINCE,
+		CITY,
+		COUNTY,
+		i.EXT_STR1,
+		i.EXT_STR2,
+		i.EXT_STR3,
+		o.ORG_ID,
+		o.ORG_NAME,
+		o.ORG_CODE,
+		o.TYPE,
+		a.ACCOUNT,
+		a.PASS,
+		a.USER_TYPE
+	</sql>
+	
+	<resultMap type="com.hisign.sso.api.rest.entity.sys.User" id="userMap">
+		<result property="userId" column="USER_ID" />
+		<result property="userName" column="USER_NAME" />
+		<result property="sex" column="SEX" />
+		<result property="cid" column="CID" />
+		<result property="policeId" column="POLICE_ID" />
+		<result property="contact" column="CONTACT" />
+		<result property="avatar" column="AVATAR" />
+		<result property="post" column="POST" />
+		<result property="postName" column="POST_NAME" />
+		<result property="birth" column="BIRTH" />
+		<result property="poli" column="POLI" />
+		<result property="phone" column="PHONE" />
+		<result property="fax" column="FAX" />
+		<result property="address" column="ADDRESS" />
+		<result property="zipcode" column="ZIPCODE" />
+		<result property="province" column="PROVINCE" />
+		<result property="city" column="CITY" />
+		<result property="county" column="COUNTY" />
+		<result property="extStr1" column="EXT_STR1" />
+		<result property="extStr2" column="EXT_STR2" />
+		<result property="extStr3" column="EXT_STR3" />
+		<result property="orgId" column="ORG_ID" />
+		<result property="orgName" column="ORG_NAME" />
+		<result property="orgCode" column="ORG_CODE" />
+		<result property="orgType" column="TYPE" />
+		<result property="account" column="ACCOUNT" />
+		<result property="pass" column="PASS" />
+		<result property="userType" column="USER_TYPE" />
+	</resultMap>
+
+</mapper>

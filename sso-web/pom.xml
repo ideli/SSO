@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.hisign</groupId>
+    <artifactId>sso-root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>com.hisign</groupId>
+  <artifactId>sso-web</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>sso-web</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>com.hisign</groupId>
+	  <artifactId>sso-api</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hisign</groupId>
+	  <artifactId>sso-common</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <finalName>sso</finalName>
+	<plugins> 
+         <plugin>
+             <groupId>org.apache.tomcat.maven</groupId>
+             <artifactId>tomcat7-maven-plugin</artifactId>
+             <version>2.1</version>
+             <configuration>
+                 <port>9090</port>
+                 <path>/sso</path>
+                 <uriEncoding>UTF-8</uriEncoding>
+                 <server>tomcat7</server>
+             </configuration>
+         </plugin>
+         
+     </plugins> 
+  </build>
+</project>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jaxws="http://cxf.apache.org/jaxws" 
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws
+		http://cxf.apache.org/schemas/jaxws.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context  
+      	http://www.springframework.org/schema/context/spring-context.xsd
+        ">
+    
+	<!-- use tomcat server -->
+    <dubbo:protocol name="rest" port="${rest_log_port}" threads="500" contextpath="api/sys" server="tomcat" accepts="500"
+                  extension="com.hisign.sso.api.rest.filter.TokenInterceptor"/>
+    
+	<dubbo:service interface="com.hisign.sso.api.service.sys.LogRecordService" ref="logRecordService"  protocol="rest" />
+</beans>

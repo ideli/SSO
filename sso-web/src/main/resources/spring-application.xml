@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    
+    <import resource="spring-dubbo.xml" />
+    <import resource="spring-shiro-web.xml" />
+
+	<!-- 读取资源文件 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- 
+		<property name="locations" >
+			<list>
+				<value>classpath:x.properties</value>
+			</list>
+    	</property> -->
+	</bean>
+	
+	<bean id="cacheService" class="com.hisign.sdk.service.impl.CacheServiceImpl">
+        <property name="host" value="${redis_host}"/>
+        <property name="port" value="${redis_port}"/>
+        <property name="expire" value="${redis_expire}"/>
+    </bean>
+	
+	<!-- 使用Spring组件扫描的方式来实现自动注入bean -->
+	<context:component-scan base-package="com.hisign.sso.web" />
+
+	<!-- 隐式地向 Spring 容器注册 -->
+	<context:annotation-config />	
+</beans>

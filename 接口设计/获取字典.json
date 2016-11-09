@@ -1,0 +1,48 @@
+POST
+URL:
+http://ip:端口/ssorest/sys/dict.json
+
+请求头：
+systemid: xcky
+token: 96a2e6e34e2941b21f5aa737ee0828b5
+Content-Type: application/json
+
+请求：
+{
+  "reqHead": {
+    "reqSn": "10001",
+    "reqTime": "20151223173601",
+    "apiCode": "sys.login",
+    "sysCode": "xcky",
+    "secretKey": ""
+  },
+  "reqBody": "报文体字符串"
+}
+
+reqBody明文:
+{
+  "sysCode": "系统代码",
+  "dictKey": "字典键",
+  "parentKey": "字典父键",
+  "rootKey": "字典类型"
+}
+
+响应：
+{
+  "rspHead": {
+    "reqSn": "同请求中的reqSn",
+    "rspTime": "20151223173601",
+    "secretKey": ""
+  },
+  "rspBody": "报文体字符串"
+}
+
+rspBody明文:
+[
+    {
+        "dictKey": "1",
+        "parentKey": "1",
+        "dictValue1": "1",
+        "dictPy": "1"
+    }
+]

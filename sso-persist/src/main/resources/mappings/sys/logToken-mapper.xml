@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.LogTokenMapper">
+	
+	<!-- 增加信息 -->
+	<insert id="add" parameterType="LogToken">
+		insert into UAOP_LOG_TOKEN (
+			<include refid="selectId" />
+		)
+		values (
+			<include refid="insertId" />
+		)
+	</insert>
+	
+	<!-- 根据主键查询 -->
+	<select id="getById" resultMap="logTokenMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_LOG_TOKEN
+		<where>
+			TOKEN=#{token}
+		</where>
+	</select>
+	
+	<delete id="delete" parameterType="string">
+		delete from UAOP_LOG_TOKEN 
+		<where>
+			TOKEN=#{token}
+		</where>
+	</delete>
+
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		TOKEN,ACCOUNT,SYS_CODE,TOKEN_TIME,RANDOM_VAL,EFFECTIVE_TIME,INVALID_TIME,CREATE_DATE
+		,USER_ID
+	</sql>
+
+	<sql id="insertId">
+		#{token,jdbcType=VARCHAR},#{account,jdbcType=VARCHAR},#{sysCode,jdbcType=VARCHAR},#{tokenTime,jdbcType=VARCHAR},#{randomVal,jdbcType=VARCHAR},#{effectiveTime,jdbcType=NUMERIC},#{invalidTime,jdbcType=NUMERIC},#{createDate,jdbcType=DATE}
+		,#{userId,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="insertBatchId">
+		#{item.token,jdbcType=VARCHAR},#{item.account,jdbcType=VARCHAR},#{item.sysCode,jdbcType=VARCHAR},#{item.tokenTime,jdbcType=VARCHAR},#{item.randomVal,jdbcType=VARCHAR},#{item.effectiveTime,jdbcType=NUMERIC},#{item.invalidTime,jdbcType=NUMERIC},#{item.createDate,jdbcType=DATE}
+		,#{item.userId,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="updateId">
+		TOKEN=#{token,jdbcType=VARCHAR},ACCOUNT=#{account,jdbcType=VARCHAR},SYS_CODE=#{sysCode,jdbcType=VARCHAR},TOKEN_TIME=#{tokenTime,jdbcType=VARCHAR},RANDOM_VAL=#{randomVal,jdbcType=VARCHAR},EFFECTIVE_TIME=#{effectiveTime,jdbcType=NUMERIC},INVALID_TIME=#{invalidTime,jdbcType=NUMERIC},CREATE_DATE=#{createDate,jdbcType=DATE}
+		,USER_ID=#{userId,jdbcType=VARCHAR}
+	</sql>
+
+	<resultMap type="LogToken" id="logTokenMap">
+		<result property="token" column="TOKEN" />
+		<result property="account" column="ACCOUNT" />
+		<result property="sysCode" column="SYS_CODE" />
+		<result property="tokenTime" column="TOKEN_TIME" />
+		<result property="randomVal" column="RANDOM_VAL" />
+		<result property="effectiveTime" column="EFFECTIVE_TIME" />
+		<result property="invalidTime" column="INVALID_TIME" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="userId" column="USER_ID" />
+	</resultMap>
+</mapper>

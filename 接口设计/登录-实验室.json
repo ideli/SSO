@@ -1,0 +1,29 @@
+POST
+URL:
+http://127.0.0.1:58811/api/sys/login.json
+
+请求头：
+Content-Type: application/json
+systemId: alims
+
+请求：
+{
+    "account": "super",
+    "pass": "123456"
+}
+
+
+响应：
+{
+    "token": "65ee4a2df25609ff928bd802e42fe0fd",
+    "userId": "bac27d2398e043d2970e9e62ab4b4d34",
+    "account": null,
+    "sysCode": null,
+    "tokenTime": null,
+    "randomVal": null,
+    "effectiveTime": null,
+    "invalidTime": null,
+    "createDate": null
+}
+
+

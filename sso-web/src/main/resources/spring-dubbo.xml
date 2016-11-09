@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jaxws="http://cxf.apache.org/jaxws" 
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws
+		http://cxf.apache.org/schemas/jaxws.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context  
+      	http://www.springframework.org/schema/context/spring-context.xsd
+        ">
+    
+	<dubbo:application name="hisign-sso-app" />
+	<!-- 
+	<dubbo:registry address="${registry_address}" /> -->
+	<dubbo:registry protocol="zookeeper" address="${zkconnect}" />
+    <!-- -->
+    <dubbo:reference id="userService" interface="com.hisign.sso.api.service.sys.UserService" timeout="20000" retries="0" protocol="rmi"/>
+    
+    <dubbo:reference id="cacheLoader"  interface="com.hisign.sdk.api.service.CacheLoader" timeout="20000" retries="0" />
+    
+    <dubbo:reference id="shiroLoginService" interface="com.hisign.sso.api.service.sys.ShiroLoginService" timeout="20000" retries="0" />
+</beans>

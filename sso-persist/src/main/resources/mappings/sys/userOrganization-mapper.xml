@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.UserOrganizationMapper">
+
+	<!-- 增加信息 -->
+	<insert id="add" parameterType="UserOrganization">
+		insert into UAOP_USER_ORGANIZATION (
+		<include refid="selectId" />
+		)
+		values (
+		<include refid="insertId" />
+		)
+	</insert>
+
+	<!-- 批量增加信息 -->
+	<insert id="addBatch" parameterType="java.util.List">
+		BEGIN
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			insert into UAOP_USER_ORGANIZATION (
+			<include refid="selectId" />
+			)
+			values
+			(
+			<include refid="insertBatchId" />
+			)
+		</foreach>
+		;
+		END;
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="UserOrganization">
+		delete from UAOP_USER_ORGANIZATION where ORG_ID=#{orgId} and USER_ID=#{userId}
+	</delete>
+
+	<!-- 查询部门下所有的用户Id列表 -->
+	<select id="getUserIdsInOrganization" resultType="String"
+		parameterType="String">
+		select USER_ID from UAOP_USER_ORGANIZATION
+		<where>
+			ORG_ID=#{orgId}
+		</where>
+	</select>
+
+	<!-- 删除 -->
+	<delete id="deleteByUserIds">
+		delete from UAOP_USER_ORGANIZATION where USER_ID in 
+                 <foreach item="item" index="index" collection="list" 
+	               open="(" separator="," close=")">
+	              #{item}
+	        	 </foreach>
+	</delete>
+
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		USER_ID,ORG_ID,TYPE,ADMIN
+	</sql>
+
+	<sql id="insertId">
+		#{userId,jdbcType=VARCHAR},#{orgId,jdbcType=VARCHAR},#{type,jdbcType=NUMERIC},#{admin,jdbcType=NUMERIC}
+	</sql>
+
+	<sql id="insertBatchId">
+		#{item.userId,jdbcType=VARCHAR},#{item.orgId,jdbcType=VARCHAR},#{item.type,jdbcType=NUMERIC},#{item.admin,jdbcType=NUMERIC}
+	</sql>
+
+	<sql id="updateId">
+		USER_ID=#{userId,jdbcType=VARCHAR},ORG_ID=#{orgId,jdbcType=VARCHAR},TYPE=#{type,jdbcType=NUMERIC},ADMIN=#{admin,jdbcType=NUMERIC}
+	</sql>
+
+	<resultMap type="com.hisign.sso.api.entity.sys.UserOrganization"
+		id="userOrganizationMap">
+		<result property="userId" column="USER_ID" />
+		<result property="orgId" column="ORG_ID" />
+		<result property="type" column="TYPE" />
+		<result property="admin" column="ADMIN" />
+	</resultMap>
+
+</mapper>

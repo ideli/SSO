@@ -1,0 +1,40 @@
+POST
+URL:
+http://ip:端口/ssorest/sys/login.json
+
+请求头：
+Content-Type: application/json
+
+请求：
+{
+  "reqHead": {
+    "reqSn": "10001",
+    "reqTime": "20151223173601",
+    "apiCode": "sys.login",
+    "sysCode": "xcky",
+    "secretKey": "密钥字符串"
+  },
+  "reqBody": "密文字符串"
+}
+
+reqBody明文:
+{
+  "account": "用户账号字符串",
+  "pass": "密码明文"
+}
+
+响应：
+{
+  "rspHead": {
+    "reqSn": "同请求中的reqSn",
+    "rspTime": "20151223173601",
+    "secretKey": "同请求中的密钥字符串"
+  },
+  "rspBody": "密文字符串"
+}
+
+rspBody明文:
+{
+  "token": "字符串",
+  "invalidTime": "令牌失效时间(长整型)"
+}

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.hisign</groupId>
+  <artifactId>sso-root</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>sso-root</name>
+  <url>http://maven.apache.org</url>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<shiro.version>1.2.3</shiro.version>
+	<spring.version>4.2.5.RELEASE</spring.version>
+	<springmvc.version>4.2.5.RELEASE</springmvc.version>
+	<!-- mybatis -->
+	<mybatis.version>3.2.4</mybatis.version>
+	<!-- log4j-hisign -->
+	<slf4j.version>1.7.7</slf4j.version>
+	<log4j.version>1.2.17</log4j.version>
+  </properties>
+
+  <dependencies>
+    <!-- junit -->
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.11</version>
+		<scope>test</scope>
+	</dependency>
+	<!-- *** dubbo BEGIN -->
+	<dependency>
+	  <groupId>com.hisign</groupId>
+	  <artifactId>dubbox</artifactId>
+	  <version>2.8.4</version>
+	</dependency>
+	<dependency>
+	  <groupId>com.hisign</groupId>
+	  <artifactId>dubbo-monitor-simple</artifactId>
+	  <version>2.8.4</version>
+	</dependency>
+	<dependency>
+	  <groupId>org.javassist</groupId>
+	  <artifactId>javassist</artifactId>
+	  <version>3.18.1-GA</version>
+	</dependency>
+	<!-- ### dubbo END -->
+	<!-- *** zkclient BEGIN -->
+	<dependency>
+	  <groupId>com.101tec</groupId>
+	  <artifactId>zkclient</artifactId>
+	  <version>0.3</version>
+	</dependency> 
+	<!-- ### zkclient END -->
+	<!-- json -->
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.13</version>
+	</dependency>
+	<!-- *** hisign log BEGIN -->
+  	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>${log4j.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+		<version>${slf4j.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>${slf4j.version}</version>
+	</dependency>
+	<!-- ### hisign log END -->
+	<!-- *** spring BEGIN -->
+  	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>spring-core</artifactId>
+	  <version>${spring.version}</version>
+	</dependency>  
+  	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>spring-beans</artifactId>
+	  <version>${spring.version}</version>
+	</dependency>  
+  	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>spring-context</artifactId>
+	  <version>${spring.version}</version>
+	</dependency> 
+  	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>spring-context-support</artifactId>
+	  <version>${spring.version}</version>
+	</dependency> 
+	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>spring-tx</artifactId>
+	  <version>${spring.version}</version>
+	</dependency> 
+	<dependency>
+	  <groupId>org.springframework</groupId>
+	  <artifactId>spring-test</artifactId>
+	  <version>${spring.version}</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${springmvc.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+		<version>${springmvc.version}</version>
+	</dependency>
+	<!-- ### spring END -->
+	
+	<!-- *** shiro BEGIN -->
+	<dependency>
+	  <groupId>org.apache.shiro</groupId>
+	  <artifactId>shiro-core</artifactId>
+	  <version>${shiro.version}</version>
+	</dependency>
+	<dependency>  
+		<groupId>org.apache.shiro</groupId>  
+		<artifactId>shiro-web</artifactId>  
+		<version>${shiro.version}</version>  
+	</dependency>
+	<dependency>
+		<groupId>org.apache.shiro</groupId>
+		<artifactId>shiro-ehcache</artifactId>
+		<version>${shiro.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.shiro</groupId>
+		<artifactId>shiro-quartz</artifactId>
+		<version>${shiro.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.shiro</groupId>
+		<artifactId>shiro-spring</artifactId>
+		<version>${shiro.version}</version>
+	</dependency>
+	<!-- ### shiro END -->
+	<!-- mybatis -->
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis</artifactId>
+		<version>${mybatis.version}</version>
+	</dependency>
+	<!-- mybatis/spring -->
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-spring</artifactId>
+		<version>1.1.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.mybatis.caches</groupId>
+		<artifactId>mybatis-ehcache</artifactId>
+		<version>1.0.3</version>
+	</dependency>
+	<!-- mysql -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.29</version>
+	</dependency>
+	<dependency>
+	  <groupId>com.oracle</groupId>
+	  <artifactId>ojdbc5</artifactId>
+	  <version>11.2.0.3.0</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>javax.servlet</groupId>
+	  <artifactId>javax.servlet-api</artifactId>
+	  <version>3.1.0</version>
+	  <scope>provided</scope>
+	</dependency>
+	<dependency>
+	  <groupId>commons-collections</groupId>
+	  <artifactId>commons-collections</artifactId>
+	  <version>3.2.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.crazycake</groupId>
+		<artifactId>shiro-redis</artifactId>
+		<version>2.4.2.1-RELEASE</version>
+	</dependency>
+
+    <dependency>
+      <groupId>com.hisign</groupId>
+	  <artifactId>sdk-cache-core</artifactId>
+	  <version>1.0-SNAPSHOT</version>
+    </dependency>
+	<dependency>
+      <groupId>javax.servlet</groupId>
+	  <artifactId>jstl</artifactId>
+	  <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>taglibs</groupId>
+	  <artifactId>standard</artifactId>
+	  <version>1.1.2</version>
+    </dependency>
+	<dependency>
+		<groupId>org.jboss.resteasy</groupId>
+		<artifactId>resteasy-jaxrs</artifactId>
+		<version>3.0.7.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.jboss.resteasy</groupId>
+		<artifactId>resteasy-client</artifactId>
+		<version>3.0.7.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>javax.validation</groupId>
+		<artifactId>validation-api</artifactId>
+		<version>1.0.0.GA</version>
+	</dependency>
+	<!-- json-->
+	<dependency>
+		<groupId>org.jboss.resteasy</groupId>
+		<artifactId>resteasy-jackson-provider</artifactId>
+		<version>3.0.7.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>com.hisign</groupId>
+		<artifactId>sdk-config</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</dependency>
+	<!-- *** gson BEGIN -->
+    <dependency>
+	  <groupId>com.google.code.gson</groupId>
+	  <artifactId>gson</artifactId>
+	  <version>2.3.1</version>
+	</dependency>
+	<!-- ### gson END -->
+	<!-- http://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on -->
+	<dependency>
+		<groupId>org.bouncycastle</groupId>
+		<artifactId>bcprov-jdk15</artifactId>
+		<version>1.43</version>
+	</dependency>
+
+  </dependencies>
+  <repositories>
+    <repository>
+      <id>cloudera</id>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+    </repository>
+  </repositories>
+  <modules>
+    <module>sso-api</module>
+    <module>sso-common</module>
+    <module>sso-persist</module>
+    <module>sso-service</module>
+    <module>sso-web</module>
+    <module>sso-service-log</module>
+  </modules>
+
+  <distributionManagement>
+    <repository>
+      <id>dev-releases</id>
+      <name>MyCo Internal Repository releases</name>
+      <url>http://192.168.15.208:8081/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>dev-snapshots</id>
+      <name>MyCo Internal Repository snapshots</name>
+      <url>http://192.168.15.208:8081/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+</project>

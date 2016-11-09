@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jaxws="http://cxf.apache.org/jaxws" 
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws
+		http://cxf.apache.org/schemas/jaxws.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context  
+      	http://www.springframework.org/schema/context/spring-context.xsd
+        ">
+    
+	<!-- use tomcat server -->
+    <dubbo:protocol name="rest" port="${rest_port}" threads="500" contextpath="api/sys" server="tomcat" accepts="500"
+                  extension="com.hisign.sso.api.rest.filter.TokenInterceptor,com.hisign.sso.api.rest.exception.RestBusinessExceptionMapper"/>
+    
+	<dubbo:service interface="com.hisign.sso.api.service.sys.LoginService" ref="loginService"  protocol="rest" validation="false" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.UserService" ref="userService" protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.OrganiseService" ref="organiseService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.UserInfoService" ref="userInfoService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.UserOrganizationService" ref="userOrganizationService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.RoleService" ref="roleService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.SysUserRoleService" ref="sysUserRoleService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.MenuResourceService" ref="menuResourceService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.ServiceResourceService" ref="serviceResourceService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.RoleResourceService" ref="roleResourceService"  protocol="rest" />
+	
+	<dubbo:service interface="com.hisign.sso.api.service.sys.DictService" ref="dictService"  protocol="rest" />
+		
+	<dubbo:service interface="com.hisign.sso.api.service.sys.SysAccountService" ref="sysAccountService"  protocol="rest" />
+
+</beans>

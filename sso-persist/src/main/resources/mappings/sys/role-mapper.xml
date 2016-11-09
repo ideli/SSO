@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hisign.sso.persist.mapper.sys.RoleMapper">
+
+	<!-- 增加信息 -->
+	<insert id="add" parameterType="Role">
+		insert into UAOP_ROLE (
+		<include refid="selectId" />
+		)
+		values (
+		<include refid="insertId" />
+		)
+	</insert>
+
+	<!-- 批量增加信息 -->
+	<insert id="addBatch" parameterType="java.util.List">
+		BEGIN
+		<foreach collection="list" item="item" index="index"
+			separator=";">
+			insert into UAOP_ROLE (
+			<include refid="selectId" />
+			)
+			values
+			(
+			<include refid="insertBatchId" />
+			)
+		</foreach>
+		;
+		END;
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="String">
+		update UAOP_ROLE
+		<set>
+			<include refid="updateId" />
+		</set>
+		where ROLE_ID=#{roleId}
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="String">
+		delete from UAOP_ROLE where
+		ROLE_ID=#{roleId}
+	</delete>
+
+	<!-- 查询所有符合条件的 -->
+	<select id="find" resultMap="roleMap" parameterType="Role">
+		select
+		<include refid="selectId" />
+		from UAOP_ROLE
+		<where>
+		    where STATUS=0
+			<if test="roleName != null and roleName != ''">
+				 and ROLE_NAME like '%'||#{roleName}||'%'
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据主键查询 -->
+	<select id="getById" resultMap="roleMap" parameterType="String">
+		select
+		<include refid="selectId" />
+		from UAOP_ROLE
+		<where>
+			STATUS=0 and ROLE_ID=#{roleId}
+		</where>
+	</select>
+
+	<sql id="clausePage">
+		from UAOP_ROLE
+		<where>
+		    where STATUS=0
+			<if test="roleName != null and roleName != ''">
+				and ROLE_NAME like '%'||#{roleName}||'%'
+			</if>
+			<if test="superId != null and superId != ''">
+				and SUPER_ID=#{superId}
+			</if>
+			<if test="note != null and note != ''">
+				and NOTE like '%'||#{note}||'%'
+			</if>
+		</where>
+	</sql>
+
+	<select id="query" resultMap="roleMap" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		<include refid="clausePage" />
+	</select>
+
+	<select id="count" resultType="Integer" parameterType="java.util.HashMap">
+		select
+		count(0)
+		<include refid="clausePage" />
+	</select>
+
+	<!-- 查询所有符合条件的 -->
+	<select id="getRoleListByAccount" resultMap="roleMap" parameterType="String">
+		select  r.ROLE_ID,r.ROLE_NAME,r.SUPER_ID,NOTE,r.STATUS
+		     from UAOP_ROLE r,UAOP_SYSUSER_ROLE s where r.STATUS=0 and r.ROLE_ID=s.ROLE_ID and s.ACCOUNT=#{account}
+	</select>
+	
+	<!-- 根据UserId查询角色列表 -->
+	<select id="getRoleListByUserId" resultMap="roleMap" parameterType="String">
+		select  r.ROLE_ID,r.ROLE_NAME,r.SUPER_ID,NOTE,r.STATUS
+		     from UAOP_ROLE r,UAOP_SYSUSER_ROLE s,UAOP_SYSUSER u where r.STATUS=0 and r.ROLE_ID=s.ROLE_ID and s.ACCOUNT=u.ACCOUNT and u.USER_ID=#{userId}
+	</select>
+	
+	<update id="updateStatusById" parameterType="Role">
+		update UAOP_ROLE
+		<set>
+			<include refid="updateStatusId" />
+		</set>
+		where ROLE_ID=#{roleId}
+	</update>
+
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+		ROLE_ID,ROLE_NAME,SUPER_ID,NOTE,STATUS,CREATE_ACCOUNT,CREATE_TIME,LAST_TERMINAL,LAST_SYS
+	</sql>
+
+	<sql id="insertId">
+		#{roleId,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR},#{superId,jdbcType=VARCHAR},#{note,jdbcType=VARCHAR},#{status,jdbcType=NUMERIC},#{createAccount,jdbcType=VARCHAR},#{createTime,jdbcType=NUMERIC},#{lastTerminal,jdbcType=VARCHAR},#{lastSys,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="insertBatchId">
+		#{item.roleId,jdbcType=VARCHAR},#{item.roleName,jdbcType=VARCHAR},#{item.superId,jdbcType=VARCHAR},#{item.note,jdbcType=VARCHAR},#{item.status,jdbcType=NUMERIC},#{item.createAccount,jdbcType=VARCHAR},#{item.createTime,jdbcType=NUMERIC},#{item.lastTerminal,jdbcType=VARCHAR},#{item.lastSys,jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="updateId">
+		ROLE_ID=#{roleId,jdbcType=VARCHAR},ROLE_NAME=#{roleName,jdbcType=VARCHAR},SUPER_ID=#{superId,jdbcType=VARCHAR},NOTE=#{note,jdbcType=VARCHAR},STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
+	</sql>
+
+    <sql id="updateStatusId">
+		STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
+	</sql>
+	
+	
+	<resultMap type="com.hisign.sso.api.entity.sys.Role" id="roleMap">
+		<result property="roleId" column="ROLE_ID" />
+		<result property="roleName" column="ROLE_NAME" />
+		<result property="superId" column="SUPER_ID" />
+		<result property="note" column="NOTE" />
+		<result property="status" column="STATUS" />
+		<result property="createAccount" column="CREATE_ACCOUNT" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="lastModifyAccount" column="LAST_MODIFY_ACCOUNT" />
+		<result property="lastModifyTime" column="LAST_MODIFY_TIME" />
+		<result property="lastTerminal" column="LAST_TERMINAL" />
+		<result property="lastSys" column="LAST_SYS" />
+	</resultMap>
+
+</mapper>

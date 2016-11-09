@@ -1,0 +1,123 @@
+body{
+  background: #fff;
+}
+.content{
+  width: 1025px;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 20px 0;
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.menu{
+  font-family: "微软雅黑", "Open Sans", Helvetica, Arial, sans-serif;
+  width: 200px;
+  color: #999999;
+  font-size: 12px;
+  a{
+    color: #999999;
+  }
+  ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .title{
+    text-align: center;
+    margin: 0;
+    background: #fafafa;
+    width: 200px;
+    height: 64px;
+    line-height: 62px;
+    color: #666;
+    font-size: 18px;
+    border: 1px solid #dcdcdc;
+  }
+  li.active{
+    .listContent{
+      display: block;
+    }
+  }
+  .listContent{
+    display: none;
+  }
+  .listGroup{
+    border: 1px solid #dcdcdc;
+    width: 190px;
+    margin: 0 auto;
+    margin-top:-1px;
+    .listGroup>li div.total{
+      border-bottom: 0;
+    }
+    .total{
+      font-size: 14px;
+      height: 50px;
+      border-bottom: 1px solid #dcdcdc;
+      padding-left:30px;
+      line-height: 49px;
+      color: #666;
+      cursor: pointer;
+      span{
+        margin-right: 12px;
+      }
+    }
+    .listContent{
+      display: none;
+      a{
+        display: block;
+        padding-left: 56px;
+        line-height: 30px;
+        text-decoration: none;
+        color: #999;
+      }
+      .pageName.active{
+        color: #666;
+      }
+    }
+  }
+  li.active{
+    .total{
+      color: #1f58b5;
+    }
+    .listContent{
+      display: block;
+    }
+  }
+}
+
+.main{
+  width: 800px;
+  padding: 10px;
+  font-size: 12px;
+  ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .listMain{
+    h4.title{
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0;
+      padding: 10px 0;
+      color: #000;
+    }
+    .text{
+      padding-bottom: 10px;
+    }
+    .img-box{
+      padding: 10px;
+      margin-bottom: 40px;
+      img{
+        display: block;
+        max-width: 90%;
+        margin: 0 auto;
+        box-shadow:-20px 10px 40px 0px #e5e5e5;
+      }
+    }
+  }
+}

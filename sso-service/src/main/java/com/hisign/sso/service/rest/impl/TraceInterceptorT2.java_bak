@@ -1,0 +1,104 @@
+/**
+ * 
+ */
+package com.hisign.sso.service.rest.impl;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.ext.ReaderInterceptor;
+import javax.ws.rs.ext.ReaderInterceptorContext;
+import javax.ws.rs.ext.WriterInterceptor;
+import javax.ws.rs.ext.WriterInterceptorContext;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.hisign.aes.AESCoder;
+import com.hisign.rsa.RSACoderForServer;
+import com.hisign.sdk.common.CustomServiceLayerException;
+import com.hisign.sdk.common.util.StringUtils;
+import com.hisign.sso.common.OutputStreamWrapper;
+
+/**
+ * 日志记录的拦截器
+ * @author chailiangzhi
+ * @date 2015-12-26
+ * 
+ */
+@Priority(Priorities.USER)
+public class TraceInterceptorT2 implements ReaderInterceptor, WriterInterceptor {
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+
+	/* (non-Javadoc)
+	 * @see javax.ws.rs.ext.ReaderInterceptor#aroundReadFrom(javax.ws.rs.ext.ReaderInterceptorContext)
+	 */
+	public Object aroundReadFrom(ReaderInterceptorContext readerInterceptorContext) throws IOException,
+			WebApplicationException {
+		MultivaluedMap<String,String> headerMap = readerInterceptorContext.getHeaders();
+		String systemid = null;
+		String token = null;
+		
+		Set<String> set = headerMap.keySet();
+		if(headerMap.containsKey("systemid")){
+			systemid = headerMap.get("systemid").get(0);
+		}
+		
+		if(headerMap.containsKey("token")){
+			token = headerMap.get("token").get(0);
+		}
+		
+		int result = this.validateRequest(systemid, token);
+		if(result == 0){
+			return readerInterceptorContext.proceed();
+		}else{
+			throw new IOException("can't pass validate");
+		}
+	}
+	
+	
+	/**
+	 * 验证请求
+	 * @param systemid
+	 * @param token
+	 * @return int 
+	 */
+	private int validateRequest(String systemid,String token){
+		if(StringUtils.isEmpty(systemid)){
+			return 80001;
+		}
+		
+		if(StringUtils.isEmpty(token)){
+			return 80002;
+		}
+		
+		//TODO  进行权限验证
+		return 0;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see javax.ws.rs.ext.WriterInterceptor#aroundWriteTo(javax.ws.rs.ext.WriterInterceptorContext)
+	 */
+	public void aroundWriteTo(WriterInterceptorContext writerInterceptorContext) throws IOException,
+			WebApplicationException {
+		OutputStreamWrapper wrapper = new OutputStreamWrapper(writerInterceptorContext.getOutputStream());
+		// OutputStreamEncryptWrapper
+		writerInterceptorContext.setOutputStream(wrapper);
+		writerInterceptorContext.proceed();
+		//		LogReq logReq = new LogReq();
+		String rspMsg = new String(wrapper.getBytes(), "UTF-8");
+	}
+
+}
