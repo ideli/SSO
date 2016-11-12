@@ -11,6 +11,7 @@ import net.sf.json.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.hisign.sdk.common.util.EncryptUtil;
 
@@ -77,10 +78,14 @@ public class OutputStreamEncryptWrapper extends OutputStream {
 	 * @throws IOException
 	 */
 	private void writeEncrypt() throws IOException {
-		String rspMsgPlain = new String(buffer.toByteArray(), Constant.CHARSET_NAME);
+		String charSetName = System.getProperty("charSetName");
+		if(StringUtils.isEmpty(charSetName)){
+			charSetName = "utf-8";
+		}
+		String rspMsgPlain = new String(buffer.toByteArray(), charSetName);
 		JSONObject reqJson = JSONObject.fromObject(rspMsgPlain);
 		String rspMsg = EncryptUtil.encryptMsg(reqJson, secretKey);
-		byte[] bytes = rspMsg.getBytes(Constant.CHARSET_NAME);
+		byte[] bytes = rspMsg.getBytes(charSetName);
 		output.write(bytes, 0, bytes.length);
 	}
 

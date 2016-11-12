@@ -448,4 +448,24 @@ public class MenuResourceServiceImpl implements MenuResourceService {
 			this.assembleMenuResourceTree(children, superMap);
 		}
 	}
+	
+	
+	/**
+	 * 根据systemId获取某个系统下的所有菜单项
+	 * @param systemId
+	 * @return
+	 */
+	public List<MenuResource> getAllMenusBySystemId(String systemId) throws Exception{
+		return this.mapper.getAllBySystemId(systemId);
+	}
+	
+	
+	/**
+	 * 根据账号获取其拥有权限的某个系统的所有菜单
+	 * @param map
+	 * @return
+	 */
+	public List<MenuResource> getAuthedMenusByAccount(Map<String, Object> map)  throws Exception{
+		return this.mapper.getAuthedMenusByAccount(map);
+	}
 }

@@ -8,15 +8,43 @@ package com.hisign.sso.api.constant;
  */
 public class UAOPConstant {
 	
-	//key-统一认证中心唯一标识
+	/**
+	 * key-统一认证中心唯一标识
+	 */
 	public static final String KEY_SYSTEMID = "systemId"; 
 	
-	//统一认证中心唯一标识
+	/**
+	 * 统一认证中心唯一标识
+	 */
 	public static final String SYSTEMID = "UAOP"; 
 	
 	/**
+	 * 用户开放标记
+	 */
+	public static final String USER_OPEN = "1";
+
+	/**
+	 * 客户端系统功能JSP目录
+	 */
+	public static final String JSP_SYS_DIR = "WEB-INF/jsp/sys/";
+
+	/**
+	 * 分页起始行
+	 */
+	public static final String SQL_PAGE_START_KEY = "start";
+
+	/**
+	 * 每页数据条数
+	 */
+	public static final String SQL_PAGE_SIZE_KEY = "size";
+
+	/**
+	 * 系统字符集编码
+	 */
+	public static final String CHARSET_NAME = "UTF-8";
+	
+	/**
 	 * 实体状态
-	 * @author Administrator
 	 *
 	 */
 	public static final class STATUS{ 
@@ -26,7 +54,6 @@ public class UAOPConstant {
 	
 	/**
 	 * 组织机构类型
-	 * @author Administrator
 	 *
 	 */
 	public static final class OrganiseType{ 
@@ -37,7 +64,6 @@ public class UAOPConstant {
 
 	/**
 	 * 用户类型
-	 * @author Administrator
 	 */
 	public static final class UserType{ 
 		public static final int NORMAL = 0;  //委托用户
@@ -47,7 +73,6 @@ public class UAOPConstant {
 	
 	/**
 	 * 角色类型
-	 * @author Administrator
 	 */
 	public static final class RoleType{ 
 		public static final int NORMAL = 0;  //普通角色
@@ -56,10 +81,17 @@ public class UAOPConstant {
 	
 	/**
 	 * 授权点类型
-	 * @author Administrator
 	 */
 	public static final class ResourceType{ 
 		public static final int MENU = 0;  //菜单授权点
 		public static final int SERVICE = 1; //角色授权点
+	}
+	
+	/**
+	 * 是否启用状态
+	 */
+	public static final class ActiveStatus{ 
+		public static final int UNACTIVE = 0;  //不启用
+		public static final int ACTIVE = 1; //启用
 	}
 }

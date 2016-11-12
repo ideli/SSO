@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hisign.sdk.config.SysConfigLoader;
-import com.hisign.sso.common.Constant;
+import com.hisign.sso.api.constant.UAOPConstant;
 
 /**
  * 在spring容器初始化之前从数据库加载参数
@@ -31,7 +31,7 @@ public class LoadConfigListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		// TODO Auto-generated method stub
-		SysConfigLoader.getInstance().loadSysConfig(Constant.SYSTEM_ID);
+		SysConfigLoader.getInstance().loadSysConfig(UAOPConstant.SYSTEMID);
 	}
 
 	/* (non-Javadoc)

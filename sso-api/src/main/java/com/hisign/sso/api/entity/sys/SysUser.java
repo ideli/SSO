@@ -29,6 +29,9 @@ public class SysUser extends SysBaseEntity implements java.io.Serializable {
 
 	//用户类型
 	private int userType;
+	
+	//用户启用状态  1:启用 0:禁止
+	private int activeStatus;
 
 	public String getAccount() {
 		return account;
@@ -76,6 +79,14 @@ public class SysUser extends SysBaseEntity implements java.io.Serializable {
 
 	public void setUserType(int userType) {
 		this.userType = userType;
+	}
+
+	public int getActiveStatus() {
+		return activeStatus;
+	}
+
+	public void setActiveStatus(int activeStatus) {
+		this.activeStatus = activeStatus;
 	}
 
 }

@@ -71,7 +71,7 @@
 	<sql id="clausePage">
 		from UAOP_ROLE
 		<where>
-		    where STATUS=0
+		    STATUS=0
 			<if test="roleName != null and roleName != ''">
 				and ROLE_NAME like '%'||#{roleName}||'%'
 			</if>

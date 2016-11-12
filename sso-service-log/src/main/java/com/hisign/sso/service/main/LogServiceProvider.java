@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hisign.sdk.config.SysConfigLoader;
-import com.hisign.sso.common.Constant;
+import com.hisign.sso.api.constant.UAOPConstant;
 
 /**
  * @Title:
@@ -20,7 +20,7 @@ public class LogServiceProvider {
 
 	
 	private static void initPara() {
-		SysConfigLoader.getInstance().loadSysConfig(Constant.SYSTEM_ID);
+		SysConfigLoader.getInstance().loadSysConfig(UAOPConstant.SYSTEMID);
 	}
 
 	/**

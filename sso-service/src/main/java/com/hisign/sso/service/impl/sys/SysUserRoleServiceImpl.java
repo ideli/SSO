@@ -1,6 +1,8 @@
 package com.hisign.sso.service.impl.sys;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -73,4 +75,25 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
 		return mapper.getRoleIdsByAccount(account);
 	}
 
+	
+	/**
+	 * 根据userId列表真实删除
+	 * @param userIds
+	 */
+	@Override
+	@POST
+	@Path("deletebyuserids")
+	@Consumes({ MediaType.APPLICATION_JSON })
+	public Map<String,Object> deleteByUserIds(List<String> userIds) throws Exception{
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		try{
+			mapper.deleteByUserIds(userIds);
+		}catch(Exception ex){
+			resultMap.put("message", "删除失败");
+			return resultMap;
+		}
+		
+		resultMap.put("message", "删除成功");
+		return resultMap;
+	}
 }

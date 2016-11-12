@@ -19,9 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.hisign.sdk.api.entity.CacheKey;
 import com.hisign.sdk.api.enums.CacheKeyType;
 import com.hisign.sdk.api.service.CacheService;
+import com.hisign.sso.api.constant.UAOPConstant;
 import com.hisign.sso.api.entity.sys.SysUser;
 import com.hisign.sso.api.service.sys.UserService;
-import com.hisign.sso.common.Constant;
 import com.hisign.sso.common.util.LogUtil;
 
 /**
@@ -90,7 +90,7 @@ public class UserRealm extends AuthorizingRealm {
 			throw new UnknownAccountException("用户不存在");
 		}
 
-		if (!Constant.USER_OPEN.equals(userFound.getStatus())) {
+		if (!UAOPConstant.USER_OPEN.equals(userFound.getStatus())) {
 			// 帐号锁定
 			throw new LockedAccountException();
 		}

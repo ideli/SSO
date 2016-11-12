@@ -6,6 +6,7 @@ package com.hisign.sso.api.service.sys;
 import java.util.List;
 import java.util.Map;
 
+import com.hisign.sso.api.query.QueryFilter;
 import com.hisign.sso.api.rest.entity.sys.User;
 
 /**
@@ -95,4 +96,26 @@ public interface UserService {
 	 * @return
 	 */
 	public List<User> getUsersUnderOrganise(Map<String,Object> map) throws Exception;
+	
+	/**
+	 * 按照条件进行查询
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public List<User> query(Map<String, Object> map) throws Exception;
+	
+	/**
+	 * 分页查询
+	 * @param queryFilter
+	 * @return
+	 */
+	public Map<String,Object> queryByPagination(QueryFilter queryFilter) throws Exception;
+	
+	/**
+	 * 密码修改
+	 * @param map
+	 * @return
+	 */
+	public Map<String, String> modifyPass(Map<String, Object> map) throws Exception;
 }

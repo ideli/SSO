@@ -18,6 +18,7 @@
 	<dubbo:registry protocol="zookeeper" address="${zkconnect}" />
 	<!-- 去除默认的dubbo异常处理器 -->
     <dubbo:provider filter="-exception"/>
+    <dubbo:protocol name="rmi" port="${rmi_port}" />
     
     <dubbo:service interface="com.hisign.sso.api.service.sys.LoginService" protocol="rmi" ref="loginService" />
     

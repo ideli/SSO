@@ -95,4 +95,19 @@ public interface MenuResourceService {
 	 */
 	public List<MenuResource> getAllMenuResourceTree(String systemId) throws Exception;
 	
+	/**
+	 * 根据systemId获取某个系统下的所有菜单项
+	 * @param systemId
+	 * @return
+	 */
+	public List<MenuResource> getAllMenusBySystemId(String systemId) throws Exception;
+	
+	
+	/**
+	 * 根据账号获取其拥有权限的某个系统的所有菜单
+	 * @param map
+	 * @return
+	 */
+	public List<MenuResource> getAuthedMenusByAccount(Map<String, Object> map)  throws Exception;
+	
 }

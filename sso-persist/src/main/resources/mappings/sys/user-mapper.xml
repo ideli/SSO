@@ -20,6 +20,35 @@
 		i.USER_ID=uo.USER_ID and uo.ORG_ID=o.ORG_ID and i.USER_ID=a.USER_ID
 	</select>
 	
+	
+	<!--获取完整用户信息 -->
+	<select id="query" resultMap="userMap" parameterType="java.util.Map">
+		select
+		<include refid="userSelectId" />
+		from UAOP_USER_INFO i,UAOP_ORGANIZATION o,UAOP_USER_ORGANIZATION uo,UAOP_SYSUSER a
+		where i.STATUS=0 and i.USER_ID=uo.USER_ID and uo.ORG_ID=o.ORG_ID and i.USER_ID=a.USER_ID
+		<if test="userId != null and userId != ''">
+			and i.USER_ID = #{userId}
+		</if>
+		<if test="userName != null and userName != ''">
+			and i.USER_NAME like
+			CONCAT(CONCAT('%',#{userName}),'%') escape '\'
+		</if>
+		<if test="userType != null">
+			and a.USER_ID = #{userId}
+		</if>
+		<if test="activeStatus != null">
+			and a.ACTIVE_STATUS = #{activeStatus}
+		</if>
+		<if test="orgName != null and orgName != ''">
+			and o.ORG_NAME like
+			CONCAT(CONCAT('%',#{orgName}),'%') escape '\'
+		</if>
+		<if test="orgType != null">
+			and o.TYPE = #{orgType}
+		</if>
+	</select>
+	
 	<!--查询组织机构下的用户信息-->
 	<select id="getUsersUnderOrganise" resultMap="userMap" parameterType="java.util.Map">
 		select
@@ -69,7 +98,8 @@
 		o.TYPE,
 		a.ACCOUNT,
 		a.PASS,
-		a.USER_TYPE
+		a.USER_TYPE,
+		a.ACTIVE_STATUS
 	</sql>
 	
 	<resultMap type="com.hisign.sso.api.rest.entity.sys.User" id="userMap">
@@ -101,6 +131,7 @@
 		<result property="account" column="ACCOUNT" />
 		<result property="pass" column="PASS" />
 		<result property="userType" column="USER_TYPE" />
+		<result property="activeStatus" column="ACTIVE_STATUS" />
 	</resultMap>
 
 </mapper>

@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hisign.sdk.config.SysConfigLoader;
-import com.hisign.sso.common.Constant;
+import com.hisign.sso.api.constant.UAOPConstant;
 
 /**
  * 服务层启动主类
@@ -26,7 +26,7 @@ public class ServiceProvider {
 	 * 
 	 */
 	private static void initPara() {
-		SysConfigLoader.getInstance().loadSysConfig(Constant.SYSTEM_ID);
+		SysConfigLoader.getInstance().loadSysConfig(UAOPConstant.SYSTEMID);
 		// System.setProperty("dubbo.registry.address", "zookeeper://172.16.0.114:52181");
 		// System.setProperty("rest_port", "8811");
 	}

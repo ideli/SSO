@@ -158,19 +158,19 @@
 
 		<!-- 以下与实体类的中字段一致 -->
 	<sql id="selectId">
-		ACCOUNT,USER_NAME,PASS,USER_ID,USER_TYPE,STATUS,CREATE_ACCOUNT,CREATE_TIME,LAST_TERMINAL,LAST_SYS
+		ACCOUNT,USER_NAME,PASS,USER_ID,USER_TYPE,ACTIVE_STATUS,STATUS,CREATE_ACCOUNT,CREATE_TIME,LAST_TERMINAL,LAST_SYS
 	</sql>
 
 	<sql id="insertId">
-		#{account,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{pass,jdbcType=VARCHAR},#{userId,jdbcType=NUMERIC},#{userType,jdbcType=NUMERIC},#{status,jdbcType=NUMERIC},#{createAccount,jdbcType=VARCHAR},#{createTime,jdbcType=NUMERIC},#{lastTerminal,jdbcType=VARCHAR},#{lastSys,jdbcType=VARCHAR}
+		#{account,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{pass,jdbcType=VARCHAR},#{userId,jdbcType=NUMERIC},#{userType,jdbcType=NUMERIC},#{activeStatus,jdbcType=NUMERIC},#{status,jdbcType=NUMERIC},#{createAccount,jdbcType=VARCHAR},#{createTime,jdbcType=NUMERIC},#{lastTerminal,jdbcType=VARCHAR},#{lastSys,jdbcType=VARCHAR}
 	</sql>
 
 	<sql id="insertBatchId">
-		#{item.account,jdbcType=VARCHAR},#{item.userName,jdbcType=VARCHAR},#{item.pass,jdbcType=VARCHAR},#{item.userId,jdbcType=NUMERIC},#{item.userType,jdbcType=NUMERIC},#{item.status,jdbcType=NUMERIC},#{item.createAccount,jdbcType=VARCHAR},#{item.createTime,jdbcType=NUMERIC},#{item.lastTerminal,jdbcType=VARCHAR},#{item.lastSys,jdbcType=VARCHAR}
+		#{item.account,jdbcType=VARCHAR},#{item.userName,jdbcType=VARCHAR},#{item.pass,jdbcType=VARCHAR},#{item.userId,jdbcType=NUMERIC},#{item.userType,jdbcType=NUMERIC},#{item.activeStatus,jdbcType=NUMERIC},#{item.status,jdbcType=NUMERIC},#{item.createAccount,jdbcType=VARCHAR},#{item.createTime,jdbcType=NUMERIC},#{item.lastTerminal,jdbcType=VARCHAR},#{item.lastSys,jdbcType=VARCHAR}
 	</sql>
 
 	<sql id="updateId">
-		USER_NAME=#{userName,jdbcType=VARCHAR},PASS=#{pass,jdbcType=VARCHAR},USER_ID=#{userId,jdbcType=NUMERIC},USER_TYPE=#{userType,jdbcType=NUMERIC},STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
+		USER_NAME=#{userName,jdbcType=VARCHAR},PASS=#{pass,jdbcType=VARCHAR},USER_ID=#{userId,jdbcType=NUMERIC},USER_TYPE=#{userType,jdbcType=NUMERIC},ACTIVE_STATUS=#{activeStatus,jdbcType=NUMERIC},STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
 	</sql>
 	
 	<sql id="updateStatusId">
@@ -183,6 +183,7 @@
 		<result property="pass" column="PASS" />
 		<result property="userId" column="USER_ID" />
 		<result property="userType" column="USER_TYPE" />
+		<result property="activeStatus" column="ACTIVE_STATUS" />
 		<result property="status" column="STATUS" />
 		<result property="createAccount" column="CREATE_ACCOUNT" />
 		<result property="createTime" column="CREATE_TIME" />

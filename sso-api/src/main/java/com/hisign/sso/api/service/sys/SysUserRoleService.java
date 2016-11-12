@@ -1,6 +1,7 @@
 package com.hisign.sso.api.service.sys;
 
 import java.util.List;
+import java.util.Map;
 
 import com.hisign.sso.api.entity.sys.SysUserRole;
 
@@ -41,5 +42,13 @@ public interface SysUserRoleService {
 	 * @return
 	 */
 	public List<String> getRoleIdsByAccount(String account) throws Exception;
+	
+	/**
+	 * 获取某账户下的角色Id列表
+	 * @param userIds
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,Object> deleteByUserIds(List<String> userIds) throws Exception;
 
 }

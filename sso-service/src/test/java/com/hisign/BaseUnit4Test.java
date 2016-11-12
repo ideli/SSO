@@ -17,7 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.hisign.sdk.config.SysConfigLoader;
-import com.hisign.sso.common.Constant;
+import com.hisign.sso.api.constant.UAOPConstant;
 
 /**
  * JUNIT测试基类
@@ -37,7 +37,7 @@ public class BaseUnit4Test {
 	
 	
 	public BaseUnit4Test(){
-		SysConfigLoader.getInstance().loadSysConfig(Constant.SYSTEM_ID);
+		SysConfigLoader.getInstance().loadSysConfig(UAOPConstant.SYSTEMID);
 	}
 
 	@BeforeClass

@@ -23,17 +23,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.dubbo.rpc.protocol.rest.support.ContentType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.hisign.sso.api.constant.UAOPConstant;
+import com.hisign.sso.api.entity.sys.Organise;
 import com.hisign.sso.api.entity.sys.Role;
 import com.hisign.sso.api.entity.sys.SysUser;
 import com.hisign.sso.api.entity.sys.UserInfo;
 import com.hisign.sso.api.entity.sys.UserOrganization;
+import com.hisign.sso.api.query.QueryCondition;
+import com.hisign.sso.api.query.QueryFilter;
 import com.hisign.sso.api.rest.entity.sys.User;
 import com.hisign.sso.api.rest.exception.RestBusinessException;
+import com.hisign.sso.api.service.sys.SysAccountService;
 import com.hisign.sso.api.service.sys.UserService;
 import com.hisign.sso.common.id.SysIDGenerator;
 import com.hisign.sso.common.util.Md5Util;
@@ -96,6 +101,12 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Autowired
 	private SysUserRoleMapper sysUserRoleMapper;
+	
+	/**
+	 * 用户角色关系DAO接口
+	 */
+	@Autowired
+	private SysAccountService sysAccountService;
 	
 	
 	/* (non-Javadoc)
@@ -332,4 +343,109 @@ public class UserServiceImpl implements UserService {
 		return list;
 	}
 
+	@POST
+	@Path("query")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public List<User> query(Map<String, Object> map) throws Exception{
+		List<User> list = userMapper.query(map);
+		if(list == null){
+			return new ArrayList<User>();
+		}
+		
+		for(User user : list){
+        	String roleNameListStr = this.getRoleListStrByAccount(user.getAccount());
+        	user.setRoleName(roleNameListStr);
+        }
+		return list;
+	}
+	
+	/**
+	 * 分页查询
+	 * @param map  查询条件
+	 * @param pageNum 查询页
+	 * @param pageSize 每页显示条数
+	 * @param orderBy  排序
+	 * @return
+	 */
+	@POST
+	@Path("pagequery")
+	@Consumes({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON})
+	public Map<String,Object> queryByPagination(QueryFilter queryFilter)throws Exception {
+		int pageNum = queryFilter.getPageNum();
+		int pageSize =  queryFilter.getPageSize();
+		String orderBy = queryFilter.getOrderBy();
+		String sort = queryFilter.getSort();
+		orderBy = "i."+orderBy + " " + sort;
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		QueryCondition condition = queryFilter.getQueryCondition();
+		if(condition != null){
+			String systemId = condition.getSystemId();
+			map.put("systemId", systemId);
+			String userId = condition.getUserId();
+			map.put("userId", userId);
+			String userName = condition.getUserName();
+			map.put("userName", userName);
+			String account = condition.getAccount();
+			map.put("account", account);
+		}
+		
+		PageHelper.startPage(pageNum, pageSize, orderBy);
+        Page<User> page = (Page<User>)userMapper.query(map);
+        
+        for(User user : page){
+        	String roleNameListStr = this.getRoleListStrByAccount(user.getAccount());
+        	user.setRoleName(roleNameListStr);
+        }
+        //组织结果
+        Map<String,Object> resultMap = new HashMap<String,Object>();
+        resultMap.put("users", page.getResult());
+        resultMap.put("total", page.getTotal());
+        
+        return resultMap;
+	}
+	
+
+	/**
+	 * 根据账号获取账号列表
+	 * @param account
+	 * @return
+	 * @throws Exception
+	 */
+	public String getRoleListStrByAccount(String account) throws Exception{
+		List<Role> roleList = roleMapper.getRoleListByAccount(account);
+		if(roleList == null || roleList.size() <= 0){
+			return null;
+		}
+		
+		StringBuffer sb = new StringBuffer();
+		for(Role role : roleList){
+			String roleName = role.getRoleName();
+			if(StringUtils.isEmpty(roleName)){
+				continue;
+			}
+			
+			sb.append(roleName).append(",");
+		}
+		
+		if(sb.length() > 0){
+			sb = sb.deleteCharAt(sb.length()-1);
+		}
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * 修改密码
+	 * @param map
+	 * @throws Exception
+	 */
+	@POST
+	@Path("passmodify")
+	@Consumes({MediaType.APPLICATION_JSON})
+	public Map<String, String> modifyPass(Map<String, Object> map) throws Exception {
+		return sysAccountService.modifyPass(map);
+	}
 }
