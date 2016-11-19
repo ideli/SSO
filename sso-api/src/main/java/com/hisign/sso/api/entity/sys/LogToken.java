@@ -21,6 +21,11 @@ public class LogToken implements java.io.Serializable {
 	*
 	*/
 	private String token;
+	
+	/**
+	* 移动警务的IM专用Token
+	*/
+	private String imToken;
 
 	//
 	/**
@@ -164,6 +169,20 @@ public class LogToken implements java.io.Serializable {
 	 */
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	/**
+	 * @return the imToken
+	 */
+	public String getImToken() {
+		return imToken;
+	}
+
+	/**
+	 * @param imToken the imToken to set
+	 */
+	public void setImToken(String imToken) {
+		this.imToken = imToken;
 	}
 	
 }

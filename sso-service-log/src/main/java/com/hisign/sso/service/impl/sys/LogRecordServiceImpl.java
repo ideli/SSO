@@ -1,5 +1,6 @@
 package com.hisign.sso.service.impl.sys;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,9 @@ import com.alibaba.dubbo.rpc.protocol.rest.support.ContentType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.hisign.sso.api.entity.sys.LogRecord;
+import com.hisign.sso.api.entity.sys.Role;
+import com.hisign.sso.api.query.QueryCondition;
+import com.hisign.sso.api.query.QueryFilter;
 import com.hisign.sso.api.service.sys.LogRecordService;
 import com.hisign.sso.common.id.SysIDGenerator;
 import com.hisign.sso.persist.mapper.sys.LogRecordMapper;
@@ -42,7 +46,7 @@ public class LogRecordServiceImpl implements LogRecordService{
 	@Override
 	@GET
 	@Path("{id}")
-	public LogRecord getById(@PathParam("id")String id) {
+	public LogRecord getById(@PathParam("id")String id)  throws Exception{
 		return mapper.getById(id);
 	}
 
@@ -94,7 +98,7 @@ public class LogRecordServiceImpl implements LogRecordService{
 	@POST
 	@Path("query")
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public List<LogRecord> query(Map<String, Object> map) {
+	public List<LogRecord> query(Map<String, Object> map)  throws Exception{
 		return mapper.query(map);
 	}
 
@@ -102,9 +106,10 @@ public class LogRecordServiceImpl implements LogRecordService{
 	@POST
 	@Path("count")
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public int count(Map<String, Object> map) {
+	public int count(Map<String, Object> map)  throws Exception{
 		return mapper.count(map);
 	}
+
 
 	/**
 	 * 分页查询
@@ -118,12 +123,30 @@ public class LogRecordServiceImpl implements LogRecordService{
 	@POST
 	@Path("pagequery")
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public List<LogRecord> queryByPagination(Map<String, Object> map) {
-		int pageNum = ((Integer) map.get("pageNum")).intValue();
-		int pageSize = ((Integer) map.get("pageSize")).intValue();
-		String orderBy = (String) map.get("orderBy");
+	public Map<String,Object> queryByPagination(QueryFilter queryFilter)  throws Exception {
+		int pageNum = queryFilter.getPageNum();
+		int pageSize =  queryFilter.getPageSize();
+		String orderBy = queryFilter.getOrderBy();
+		String sort = queryFilter.getSort();
+		orderBy = orderBy + " " + sort;
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		QueryCondition condition = queryFilter.getQueryCondition();
+		if(condition != null){
+			String account = condition.getAccount();
+			map.put("account", account);
+			String systemId = condition.getSystemId();
+			map.put("systemId", systemId);
+		}
+		
 		PageHelper.startPage(pageNum, pageSize, orderBy);
-		Page<LogRecord> page = (Page<LogRecord>) mapper.query(map);
-		return page;
+        Page<LogRecord> page = (Page<LogRecord>)mapper.query(map);
+        
+        //组织结果
+        Map<String,Object> resultMap = new HashMap<String,Object>();
+        resultMap.put("result", page.getResult());
+        resultMap.put("total", page.getTotal());
+        
+        return resultMap;
 	}
 }

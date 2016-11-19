@@ -16,20 +16,12 @@ import com.hisign.sso.api.entity.sys.RoleResource;
  */
 public interface RoleResourceService {
 
-
 	/**
-	 * 根据ID或者唯一条件查询
-	 * @param id
-	 * @return
-	 */
-	public RoleResource getById(String id) throws Exception;
-   
-	/**
-	 * 根据id删除记录
+	 * 删除角色授权
 	 * @param id
 	 * @throws Exception
 	 */
-	public void delete(String id) throws Exception;
+	public void delete(RoleResource roleResource) throws Exception;
 
 	/**
 	 * 更新记录
@@ -51,5 +43,19 @@ public interface RoleResourceService {
 	 * @throws Exception
 	 */
 	public void addBatch(List<RoleResource> list) throws Exception;
+	
+	/**
+	 * 按条件进行查询
+	 */
+	public List<RoleResource> query(Map<String, Object> map)  throws Exception;
+	
+	
+	/**
+	 * 按照roleId删除角色权限关系
+	 * @param roleId
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,String> deleteByRoleId(String roleId) throws Exception;
 	
 }

@@ -53,6 +53,11 @@
 	<delete id="delete" parameterType="MenuResource">
 		delete from UAOP_MENU_RESOURCE where SYSTEM_ID=#{systemId} and RESOURCE_ID=#{resourceId}
 	</delete>
+	
+	<!-- 删除 -->
+	<delete id="deleteByCondition" parameterType="java.util.HashMap">
+		delete <include refid="clausePage" />
+	</delete>
 
 	<!-- 根据主键查询 -->
 	<select id="getById" resultMap="menuResourceMap" parameterType="java.util.HashMap">
@@ -70,7 +75,11 @@
 		<include refid="selectId" />
 		from UAOP_MENU_RESOURCE
 		<where>
-			SYSTEM_ID=#{systemId} and SUPER_ID=#{superId} order by ORDER_NUM
+			SYSTEM_ID=#{systemId} and SUPER_ID=#{superId} 
+			<if test="menuType != null">
+				and MENU_TYPE=#{menuType}
+			</if>
+			order by ORDER_NUM
 		</where>
 	</select>
 
@@ -80,14 +89,26 @@
 			<if test="resourceName != null and resourceName != ''">
 				and RESOURCE_NAME like '%'||#{resourceName}||'%'
 			</if>
+			<if test="systemId != null and systemId != ''">
+				and SYSTEM_ID=#{systemId}
+			</if>
+			<if test="superId != null and superId != ''">
+				and SUPER_ID=#{superId}
+			</if>
+			<if test="menuType != null">
+				and MENU_TYPE=#{menuType}
+			</if>
+			<if test="resourceEnName != null and resourceEnName != ''">
+				and RESOURCE_EN_NAME like '%'||#{resourceEnName}||'%'
+			</if>
 		</where>
-		order by orderNum
 	</sql>
 
 	<select id="query" resultMap="menuResourceMap" parameterType="java.util.HashMap">
 		select
 		<include refid="selectId" />
 		<include refid="clausePage" />
+		order by ORDER_NUM
 	</select>
 
 	<select id="count" resultType="Integer" parameterType="java.util.HashMap">
@@ -118,29 +139,44 @@
 		        and rr.resource_type=0
 		        and rr.role_id=sr.role_id
 		        and sr.account=#{account}
+		        <if test="menuType != null">
+					and m.MENU_TYPE=#{menuType}
+				</if>
 		        order by m.ORDER_NUM
 	</select>
 	
 	<!-- 以下与实体类的中字段一致 -->
 	<sql id="selectId">
-		SYSTEM_ID,RESOURCE_ID,RESOURCE_NAME,SUPER_ID,URL,ICON,VISIBLE_STATE,ORDER_NUM,NOTE
+		SYSTEM_ID,RESOURCE_ID,RESOURCE_NAME,SUPER_ID,URL,ICON,VISIBLE_STATE,ORDER_NUM,NOTE,MENU_TYPE,RESOURCE_EN_NAME
 	</sql>
 	
 	<sql id="menuSelectId">
-		m.SYSTEM_ID,m.RESOURCE_ID,m.RESOURCE_NAME,m.SUPER_ID,m.URL,m.ICON,m.VISIBLE_STATE,m.ORDER_NUM,m.NOTE
+		m.SYSTEM_ID,m.RESOURCE_ID,m.RESOURCE_NAME,m.SUPER_ID,m.URL,m.ICON,m.VISIBLE_STATE,m.ORDER_NUM,m.NOTE,m.MENU_TYPE,m.RESOURCE_EN_NAME
 	</sql>
 
 	<sql id="insertId">
-		#{systemId,jdbcType=VARCHAR},#{resourceId,jdbcType=VARCHAR},#{resourceName,jdbcType=VARCHAR},#{superId,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},#{icon,jdbcType=VARCHAR},#{visibleState,jdbcType=NUMERIC},#{orderNum,jdbcType=NUMERIC},#{note,jdbcType=VARCHAR}
+		#{systemId,jdbcType=VARCHAR},#{resourceId,jdbcType=VARCHAR},#{resourceName,jdbcType=VARCHAR},#{superId,jdbcType=VARCHAR},#{url,jdbcType=VARCHAR},#{icon,jdbcType=VARCHAR},#{visibleState,jdbcType=NUMERIC},#{orderNum,jdbcType=NUMERIC},#{note,jdbcType=VARCHAR},#{menuType,jdbcType=VARCHAR},#{resourceEnName,jdbcType=VARCHAR}
 	</sql>
 
 	<sql id="insertBatchId">
-		#{item.systemId,jdbcType=VARCHAR},#{item.resourceId,jdbcType=VARCHAR},#{item.resourceName,jdbcType=VARCHAR},#{item.superId,jdbcType=VARCHAR},#{item.url,jdbcType=VARCHAR},#{item.icon,jdbcType=VARCHAR},#{item.visibleState,jdbcType=NUMERIC},#{item.orderNum,jdbcType=NUMERIC},#{item.note,jdbcType=VARCHAR}
+		#{item.systemId,jdbcType=VARCHAR},#{item.resourceId,jdbcType=VARCHAR},#{item.resourceName,jdbcType=VARCHAR},#{item.superId,jdbcType=VARCHAR},#{item.url,jdbcType=VARCHAR},#{item.icon,jdbcType=VARCHAR},#{item.visibleState,jdbcType=NUMERIC},#{item.orderNum,jdbcType=NUMERIC},#{item.note,jdbcType=VARCHAR},#{item.menuType,jdbcType=VARCHAR},#{item.resourceEnName,jdbcType=VARCHAR}
 	</sql>
 
 	<sql id="updateId">
-		RESOURCE_NAME=#{resourceName,jdbcType=VARCHAR},URL=#{url,jdbcType=VARCHAR},ICON=#{icon,jdbcType=VARCHAR},VISIBLE_STATE=#{visibleState,jdbcType=NUMERIC},ORDER_NUM=#{orderNum,jdbcType=NUMERIC},NOTE=#{note,jdbcType=VARCHAR}
+		RESOURCE_NAME=#{resourceName,jdbcType=VARCHAR},URL=#{url,jdbcType=VARCHAR},ICON=#{icon,jdbcType=VARCHAR},VISIBLE_STATE=#{visibleState,jdbcType=NUMERIC},ORDER_NUM=#{orderNum,jdbcType=NUMERIC},NOTE=#{note,jdbcType=VARCHAR},MENU_TYPE=#{menuType,jdbcType=VARCHAR},RESOURCE_EN_NAME=#{resourceEnName,jdbcType=VARCHAR}
 	</sql>
+	
+	<select id="getChildrenById" resultMap="menuResourceMap" parameterType="MenuResource">
+		select
+			<include refid="selectId" />
+		from uaop_menu_resource t
+		<where>
+			SYSTEM_ID=#{systemId}
+		</where>
+		start with t.resource_id = #{resourceId}
+		connect by prior t.resource_id = t.super_id
+	</select>
+	
 
 	<resultMap type="com.hisign.sso.api.entity.sys.MenuResource" id="menuResourceMap">
 		<result property="systemId" column="SYSTEM_ID" />
@@ -152,6 +188,8 @@
 		<result property="visibleState" column="VISIBLE_STATE" />
 		<result property="orderNum" column="ORDER_NUM" />
 		<result property="note" column="NOTE" />
+		<result property="menuType" column="MENU_TYPE" />
+		<result property="resourceEnName" column="RESOURCE_EN_NAME" />
 	</resultMap>
 	
 </mapper>

@@ -25,6 +25,9 @@ public class QueryCondition implements Serializable{
 	//用户账号
 	private String account;
 	
+	//用户类型
+	private int userType=-1;
+	
     //身份证号
 	private String cid;
 	
@@ -36,6 +39,9 @@ public class QueryCondition implements Serializable{
 	
 	//角色Id
 	private String roleId;
+	
+	//不包含角色的角色Id
+	private String noRoleId;
 	
 	//角色名称
 	private String roleName;
@@ -231,5 +237,21 @@ public class QueryCondition implements Serializable{
 
 	public void setContact(String contact) {
 		this.contact = contact;
+	}
+
+	public int getUserType() {
+		return userType;
+	}
+
+	public void setUserType(int userType) {
+		this.userType = userType;
+	}
+
+	public String getNoRoleId() {
+		return noRoleId;
+	}
+
+	public void setNoRoleId(String noRoleId) {
+		this.noRoleId = noRoleId;
 	}
 }

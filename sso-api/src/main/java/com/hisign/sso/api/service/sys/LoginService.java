@@ -26,6 +26,14 @@ public interface LoginService {
 	 * @return
 	 */
 	public LogToken login(String systemId, SysUser sysUser);
+	
+	/**
+	 * REST登录接口(移动警务平台)
+	 * @param systemId
+	 * @param sysUser
+	 * @return
+	 */
+	public LogToken imlogin(String systemId, SysUser sysUser);
 
 	/**
 	 * REST注销接口(实验室前端用)

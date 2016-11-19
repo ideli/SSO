@@ -192,6 +192,8 @@ public class RoleServiceImpl implements RoleService {
 			map.put("superId", superId);
 			String note = condition.getNote();
 			map.put("note", note);
+			String systemId = condition.getSystemId();
+			map.put("systemId", systemId);
 		}
 		
 		PageHelper.startPage(pageNum, pageSize, orderBy);

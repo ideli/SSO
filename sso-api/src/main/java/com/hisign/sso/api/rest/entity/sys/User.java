@@ -177,6 +177,7 @@ public class User extends UserInfo implements Serializable {
 		sysUser.setUserId(this.getUserId());
 		sysUser.setUserType(this.userType);
 		sysUser.setActiveStatus(this.activeStatus);
+		sysUser.setPass(this.pass);
 		
 		return sysUser;
 	}

@@ -3,6 +3,8 @@
  */
 package com.hisign.sso.api.rest.filter;
 
+import org.springframework.util.StringUtils;
+
 /**
  * 请求上下文
  * 与请求绑定的变量
@@ -31,6 +33,19 @@ public class RequestContext {
 	 * 创建线程局部变量loginAccountLocal，用来保存登录用户SystemId
 	 */
 	private static ThreadLocal<String> loginSystemIdLocal = new ThreadLocal<String>();
+	
+	/**
+	 * 判断当前是否为rest访问
+	 * @return
+	 */
+	public static boolean isRestInvoke(){
+		String ip = getRequestIp();
+		if(StringUtils.isEmpty(ip)){
+			return false;
+		}else{
+			return true;
+		}
+	}
 
 	/**
 	 * @return the requestIp

@@ -82,7 +82,12 @@ public class TokenInterceptor implements ContainerRequestFilter, ContainerRespon
 			logger.error("获取HttpServletRequest异常", e);
 			throw new IOException("获取HttpServletRequest异常", e);
 		}
-		RequestContext.setRequestIp(httpServletRequest.getRemoteAddr());
+		
+		String remoteIp = httpServletRequest.getRemoteAddr();
+		if(StringUtils.isEmpty(remoteIp)){ //保证remote ip肯定不为空，用于rest和rmi调用检测
+			remoteIp = "0.0.0.0";
+		}
+		RequestContext.setRequestIp(remoteIp);
 
 		String method = requestContext.getMethod();
 		if (method.equalsIgnoreCase("POST")) {

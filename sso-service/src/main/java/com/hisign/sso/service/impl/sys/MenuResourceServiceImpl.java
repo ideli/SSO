@@ -22,6 +22,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.dubbo.rpc.protocol.rest.support.ContentType;
 import com.hisign.sdk.common.util.CommonIOUtils;
 import com.hisign.sdk.common.util.StringUtils;
+import com.hisign.sso.api.constant.UAOPConstant;
 import com.hisign.sso.api.entity.sys.MenuResource;
 import com.hisign.sso.api.entity.sys.Organise;
 import com.hisign.sso.api.entity.sys.SysUser;
@@ -239,12 +241,13 @@ public class MenuResourceServiceImpl implements MenuResourceService {
     	String systemId = (String)map.get("systemId");
     	
     	//所有菜单
-    	List<MenuResource> allList = this.mapper.getAllBySystemId(systemId);
+    	List<MenuResource> allList = this.getAllOnlyMenusBySystemId(systemId);
 		if(allList == null || allList.size() <= 0){
 			return new ArrayList<MenuResource>();
 		}
 		
 		//授权菜单
+		map.put("menuType", UAOPConstant.MenuType.MENU);
 		List<MenuResource> authedList =  this.mapper.getAuthedMenusByAccount(map);
 		if(authedList == null || authedList.size() <= 0){
 			return new ArrayList<MenuResource>();
@@ -413,6 +416,9 @@ public class MenuResourceServiceImpl implements MenuResourceService {
 		Map<String,List<MenuResource>> superMap = new HashMap<String,List<MenuResource>>();
 		for(MenuResource menu : allList){
 			String superMenuId = menu.getSuperId();
+			if(StringUtils.isEmpty(superMenuId)){
+				superMenuId = "-1";
+			}
 			List<MenuResource> children = null;
 		    if(superMap.containsKey(superMenuId)){
 		    	children = superMap.get(superMenuId);
@@ -455,7 +461,11 @@ public class MenuResourceServiceImpl implements MenuResourceService {
 	 * @param systemId
 	 * @return
 	 */
-	public List<MenuResource> getAllMenusBySystemId(String systemId) throws Exception{
+	@Override
+	@GET
+	@Path("{systemId}/listbysystem")
+	@Produces({MediaType.APPLICATION_JSON})
+	public List<MenuResource> getAllMenusBySystemId(@PathParam("systemId") String systemId) throws Exception{
 		return this.mapper.getAllBySystemId(systemId);
 	}
 	
@@ -465,7 +475,76 @@ public class MenuResourceServiceImpl implements MenuResourceService {
 	 * @param map
 	 * @return
 	 */
+	@Override
+	@POST
+	@Path("listbyauthed")
+	@Produces({MediaType.APPLICATION_JSON})
 	public List<MenuResource> getAuthedMenusByAccount(Map<String, Object> map)  throws Exception{
 		return this.mapper.getAuthedMenusByAccount(map);
+	}
+	
+	
+	/**
+	 * 根据systemId获取某个系统下的所有仅菜单项，不包含按钮
+	 * @param systemId
+	 * @return
+	 */
+	@Override
+	@GET
+	@Path("{systemId}/onlymenulistbysystem")
+	@Produces({MediaType.APPLICATION_JSON})
+	public List<MenuResource> getAllOnlyMenusBySystemId(@PathParam("systemId") String systemId) throws Exception{
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("systemId", systemId);
+		map.put("menuType", UAOPConstant.MenuType.MENU);
+		return this.mapper.query(map);
+	}
+	
+	/**
+	 * 根据systemId获取某个系统下的所有仅菜单项，不包含按钮
+	 * @param systemId
+	 * @return
+	 */
+	@Override
+	@GET
+	@Path("{systemId}/onlybuttonlistbysystem")
+	@Produces({MediaType.APPLICATION_JSON})
+	public List<MenuResource> getAllOnlyButtonsBySystemId(String systemId) throws Exception{
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("systemId", systemId);
+		map.put("menuType", UAOPConstant.MenuType.BUTTON);
+		return this.mapper.query(map);
+	}
+	
+	/**
+	 * 删除所有的子菜单
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	@POST
+	@Path("deletechildren")
+	@Produces({MediaType.APPLICATION_JSON})
+	public Map<String,String> deleteChildrenMenuResources(Map<String, Object> map) throws Exception{
+		try{
+			String systemId = (String)map.get(UAOPConstant.KEY_SYSTEMID);
+			if(StringUtils.isEmpty(systemId)){
+				throw new RestBusinessException(Status.NOT_ACCEPTABLE, "删除失败");
+			}
+			this.mapper.deleteByCondition(map);
+		}catch(Exception ex){
+			log.error("deleteChildren catch an exception",ex);
+			throw new RestBusinessException(Status.NOT_ACCEPTABLE, "删除失败");
+		}
+		
+		Map<String, String> retMap = new HashMap<String, String>();
+		retMap.put("message", "成功");
+		return retMap;
+	}
+
+	@Override
+	public List<MenuResource> getChildrenById(MenuResource menuResource) throws Exception {
+		return mapper.getChildrenById(menuResource);
 	}
 }

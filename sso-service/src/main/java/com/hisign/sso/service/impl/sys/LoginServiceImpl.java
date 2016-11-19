@@ -3,6 +3,9 @@
  */
 package com.hisign.sso.service.impl.sys;
 
+import io.rong.RongCloud;
+import io.rong.models.TokenReslut;
+
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -134,6 +137,35 @@ public class LoginServiceImpl implements LoginService {
 		} else {
 			throw new RestBusinessException(Status.NOT_ACCEPTABLE, "用户名或密码错误");
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.hisign.sso.api.service.sys.LoginService#imlogin(java.lang.String, com.hisign.sso.api.entity.sys.SysUser)
+	 */
+	@Override
+	@POST
+	@Path("imlogin")
+	public LogToken imlogin(@HeaderParam(value = "systemId") String systemId, SysUser sysUser) {
+		LogToken logToken = imlogin(systemId, sysUser);
+		String userId = logToken.getUserId();
+		String account = logToken.getAccount();
+		String appKey = "6tnym1br65cs7";//替换成您的appkey
+		String appSecret = "7ybc78yWb9U71";//替换成匹配上面key的secret
+		RongCloud rongCloud = RongCloud.getInstance(appKey, appSecret);
+		TokenReslut userGetTokenResult;
+		try {
+			userGetTokenResult = rongCloud.user.getToken(userId, account, "http://www.rongcloud.cn/images/logo.png");
+		} catch (Exception e) {
+			logger.error("生成IM的TOKEN异常", e);
+			throw new RestBusinessException(Status.EXPECTATION_FAILED, "生成IM的TOKEN异常");
+		}
+		String imToken = "error";
+		if (userGetTokenResult.getCode() == 200) {
+			imToken = userGetTokenResult.getToken();
+		}
+		logger.info("getToken:  " + userGetTokenResult.toString());
+		logToken.setImToken(imToken);
+		return logToken;
 	}
 
 	/* (non-Javadoc)

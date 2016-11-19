@@ -48,6 +48,11 @@ public class SysBaseEntity implements java.io.Serializable{
 	private String lastSys;
 	
 	/**
+	 * 显示序号
+	 */
+	private int indexNum;
+	
+	/**
 	 * 初始化通用参数
 	 * @return  
 	 * @throws
@@ -172,6 +177,14 @@ public class SysBaseEntity implements java.io.Serializable{
 
 	public void setLastSys(String lastSys) {
 		this.lastSys = lastSys;
+	}
+
+	public int getIndexNum() {
+		return indexNum;
+	}
+
+	public void setIndexNum(int indexNum) {
+		this.indexNum = indexNum;
 	}
 
 }

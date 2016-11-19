@@ -14,9 +14,6 @@ public class RoleResource implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	//主键
-	private long id; 
-	
 	//系统唯一标识
 	private String systemId;
 
@@ -31,14 +28,6 @@ public class RoleResource implements Serializable{
 	
 	//权限值
 	private long privilegeValue = 0;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getSystemId() {
 		return systemId;
@@ -84,9 +73,7 @@ public class RoleResource implements Serializable{
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("RoleResource [id=");
-		builder.append(id);
-		builder.append(", systemId=");
+		builder.append("RoleResource [systemId=");
 		builder.append(systemId);
 		builder.append(", resourceId=");
 		builder.append(resourceId);

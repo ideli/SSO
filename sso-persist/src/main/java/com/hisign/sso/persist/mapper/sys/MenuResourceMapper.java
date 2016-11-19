@@ -42,5 +42,19 @@ public interface MenuResourceMapper extends BaseMapper<MenuResource> {
 	 * @return
 	 */
 	public List<MenuResource> getAuthedMenusByAccount(Map<String, Object> map);
+	
+	/**
+	 * 按条件进行删除
+	 * @param map
+	 */
+	public void deleteByCondition(Map<String,Object> map);
 
+	/**
+	 * 查询所有子节点元素
+	 * @author yinxiaoyong
+	 * @mailto yinxiaoyong@hisign.com.cn
+	 * 2016年11月18日
+	 */
+	public List<MenuResource> getChildrenById(MenuResource menuResource);
+	
 }

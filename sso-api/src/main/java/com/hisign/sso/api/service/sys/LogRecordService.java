@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hisign.sso.api.entity.sys.LogRecord;
+import com.hisign.sso.api.query.QueryFilter;
 
 
 /**
@@ -20,7 +21,7 @@ public interface LogRecordService {
 	 * @param id
 	 * @return
 	 */
-	public LogRecord getById(String id);
+	public LogRecord getById(String id) throws Exception;
 
 	/**
 	 * 根据id删除记录
@@ -56,14 +57,14 @@ public interface LogRecordService {
 	 * @param t
 	 * @return
 	 */
-	public List<LogRecord> query(Map<String, Object> map);
+	public List<LogRecord> query(Map<String, Object> map) throws Exception;
 
 	/**
 	 * 返回条数
 	 * @param t
 	 * @return
 	 */
-	public int count(Map<String, Object> map);
+	public int count(Map<String, Object> map) throws Exception;
 	
 	/**
 	 * 分页查询
@@ -73,5 +74,5 @@ public interface LogRecordService {
 	 * @param orderBy  排序
 	 * @return
 	 */
-	public List<LogRecord> queryByPagination(Map<String, Object> map);
+	public Map<String,Object> queryByPagination(QueryFilter queryFilter) throws Exception;
 }

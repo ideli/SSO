@@ -118,4 +118,12 @@ public interface UserService {
 	 * @return
 	 */
 	public Map<String, String> modifyPass(Map<String, Object> map) throws Exception;
+	
+	/**
+	 * 根据token获取用户信息
+	 * @param token
+	 * @return
+	 * @throws Exception
+	 */
+	public User getUserByToken(String token) throws Exception;
 }

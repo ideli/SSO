@@ -21,38 +21,66 @@ public class MenuResource implements java.io.Serializable {
 	//权限资源ID
 	private String resourceId;
 
-	//权限资源名称
+	/**
+	 * 权限资源名称
+	 */
 	@JsonIgnore
 	private String resourceName;
+	
+	/**
+	 * 权限资源英文名称
+	 */
+	private String resourceEnName;
 
-	//上级权限资源ID
+	/**
+	 * 上级权限资源ID
+	 */
 	@JsonIgnore
 	private String superId;
 
-	//名称(纯为了展示使用)
+	/**
+	 * 名称(纯为了展示使用)
+	 */
 	private String name;
 	
-	//权限点对应url
+	/**
+	 * 权限点对应url
+	 */
 	@JsonIgnore
 	private String url;
 	
-	//权限点对应url 纯粹是为展示
+	/**
+	 * 权限点对应url 纯粹是为展示
+	 */
 	private String state;
 	
-	//标签
+	/**
+	 * 标签
+	 */
 	private String icon;
 	
-	//可视状态
+	/**
+	 * 可视状态
+	 */
 	@JsonIgnore
 	private int visibleState;
 	
-	//排序字段
+	/**
+	 * 排序字段
+	 */
 	@JsonIgnore
 	private int orderNum;
 
-	//说明
+	/**
+	 * 说明
+	 */
 	@JsonIgnore
 	private String note;
+	
+	/**
+	 * 菜单类型  0:菜单 1:按钮
+	 */
+	private int menuType;
 	
 	//子菜单权限
 	private List<MenuResource> children;
@@ -155,5 +183,20 @@ public class MenuResource implements java.io.Serializable {
 		this.state = state;
 	}
 
+	public int getMenuType() {
+		return menuType;
+	}
+
+	public void setMenuType(int menuType) {
+		this.menuType = menuType;
+	}
+
+	public String getResourceEnName() {
+		return resourceEnName;
+	}
+
+	public void setResourceEnName(String resourceEnName) {
+		this.resourceEnName = resourceEnName;
+	}
 	
 }

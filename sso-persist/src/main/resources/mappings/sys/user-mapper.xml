@@ -34,11 +34,24 @@
 			and i.USER_NAME like
 			CONCAT(CONCAT('%',#{userName}),'%') escape '\'
 		</if>
+		<if test="account != null  and account != ''">
+			and a.ACCOUNT = #{account}
+		</if>
 		<if test="userType != null">
-			and a.USER_ID = #{userId}
+			and a.USER_TYPE = #{userType}
 		</if>
 		<if test="activeStatus != null">
 			and a.ACTIVE_STATUS = #{activeStatus}
+		</if>
+		<if test="roleName != null and roleName != ''">
+			and a.ACCOUNT IN (select distinct sr.account from uaop_sysuser_role sr,uaop_role r
+			 where sr.role_id = r.role_id and r.role_name like CONCAT(CONCAT('%',#{roleName}),'%') escape '\')
+		</if>
+		<if test="roleId != null and roleId != ''">
+			and a.ACCOUNT IN (select distinct sr.account from uaop_sysuser_role sr where sr.role_id=#{roleId})
+		</if>
+		<if test="noRoleId != null and noRoleId != ''">
+			and a.ACCOUNT NOT IN (select distinct sr.account from uaop_sysuser_role sr where sr.role_id=#{noRoleId})
 		</if>
 		<if test="orgName != null and orgName != ''">
 			and o.ORG_NAME like
@@ -46,6 +59,9 @@
 		</if>
 		<if test="orgType != null">
 			and o.TYPE = #{orgType}
+		</if>
+		<if test="systemId != null and systemId != ''">
+			and o.SYSTEM_ID = #{systemId}
 		</if>
 	</select>
 	

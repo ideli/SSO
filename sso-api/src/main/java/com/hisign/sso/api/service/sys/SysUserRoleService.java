@@ -44,7 +44,7 @@ public interface SysUserRoleService {
 	public List<String> getRoleIdsByAccount(String account) throws Exception;
 	
 	/**
-	 * 获取某账户下的角色Id列表
+	 * 根据用户Id列表删除对应的用户与角色关系
 	 * @param userIds
 	 * @return
 	 * @throws Exception

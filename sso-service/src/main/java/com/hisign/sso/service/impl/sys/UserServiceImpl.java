@@ -29,6 +29,7 @@ import com.alibaba.dubbo.rpc.protocol.rest.support.ContentType;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.hisign.sso.api.constant.UAOPConstant;
+import com.hisign.sso.api.entity.sys.LogToken;
 import com.hisign.sso.api.entity.sys.Organise;
 import com.hisign.sso.api.entity.sys.Role;
 import com.hisign.sso.api.entity.sys.SysUser;
@@ -38,10 +39,12 @@ import com.hisign.sso.api.query.QueryCondition;
 import com.hisign.sso.api.query.QueryFilter;
 import com.hisign.sso.api.rest.entity.sys.User;
 import com.hisign.sso.api.rest.exception.RestBusinessException;
+import com.hisign.sso.api.rest.filter.RequestContext;
 import com.hisign.sso.api.service.sys.SysAccountService;
 import com.hisign.sso.api.service.sys.UserService;
 import com.hisign.sso.common.id.SysIDGenerator;
 import com.hisign.sso.common.util.Md5Util;
+import com.hisign.sso.persist.mapper.sys.LogTokenMapper;
 import com.hisign.sso.persist.mapper.sys.RoleMapper;
 import com.hisign.sso.persist.mapper.sys.SysUserMapper;
 import com.hisign.sso.persist.mapper.sys.SysUserRoleMapper;
@@ -62,7 +65,7 @@ import com.hisign.sso.service.impl.helper.BatchCommitHelper;
 @Produces({ ContentType.APPLICATION_JSON_UTF_8 })
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl  implements UserService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -108,6 +111,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private SysAccountService sysAccountService;
 	
+	/**
+	 * Token记录表DAO
+	 */
+	@Autowired
+	LogTokenMapper logTokenMapper;
+	
 	
 	/* (non-Javadoc)
 	 * @see com.hisign.sso.api.service.sys.UserService#register(com.hisign.sso.api.entity.sys.SysUser)
@@ -128,7 +137,7 @@ public class UserServiceImpl implements UserService {
 		}else{
 			sysUser.setUserType(userType);
 		}
-		
+		sysUser.setActiveStatus(user.getActiveStatus());
 		sysUser.initBaseParameter();
 
 		UserInfo userInfo = user;
@@ -160,13 +169,17 @@ public class UserServiceImpl implements UserService {
 	@Path("account/{account}")
 	public Map<String,String> isAccountExist(@PathParam("account") String account) throws Exception{
 		int count = this.mapper.isAccountExist(account);
+		Map<String,String> map = new HashMap<String,String>();
 		if(count > 0){
-			Map<String,String> map = new HashMap<String,String>();
 			map.put("account", account);
 			return map;
 		}
 		
-		throw new RestBusinessException(Response.Status.NOT_FOUND,"用户名不存在");
+		if(RequestContext.isRestInvoke()){ //当前是rest调用
+			throw new RestBusinessException(Response.Status.NOT_FOUND,"用户名不存在");
+		}else{
+			return map;
+		}
 	}
 	
 	
@@ -180,13 +193,17 @@ public class UserServiceImpl implements UserService {
 	@Path("cid/{cid}")
 	public Map<String,String> isCidExist(@PathParam("cid") String cid) throws Exception{
 		int count = this.userMapper.isCidExist(cid);
+		Map<String,String> map = new HashMap<String,String>();
 		if(count > 0){
-			Map<String,String> map = new HashMap<String,String>();
 			map.put("cid", cid);
 			return map;
 		}
 		
-		throw new RestBusinessException(Response.Status.NOT_FOUND,"身份证号不存在");
+		if(RequestContext.isRestInvoke()){ //当前是rest调用
+			throw new RestBusinessException(Response.Status.NOT_FOUND,"身份证号不存在");
+		}else{
+			return map;
+		}
 	}
 	
 	/**
@@ -199,13 +216,17 @@ public class UserServiceImpl implements UserService {
 	@Path("policeId/{policeId}")
 	public Map<String,String> isPoliceIdExist(@PathParam("policeId") String policeId) throws Exception{
 		int count = this.userMapper.isPoliceIdExist(policeId);
+		Map<String,String> map = new HashMap<String,String>();
 		if(count > 0){
-			Map<String,String> map = new HashMap<String,String>();
 			map.put("policeId", policeId);
 			return map;
 		}
 		
-		throw new RestBusinessException(Response.Status.NOT_FOUND,"警员编号不存在");
+		if(RequestContext.isRestInvoke()){ //当前是rest调用
+			throw new RestBusinessException(Response.Status.NOT_FOUND,"警员编号不存在");
+		}else{
+			return map;
+		}
 	}
 	
 	
@@ -353,8 +374,9 @@ public class UserServiceImpl implements UserService {
 			return new ArrayList<User>();
 		}
 		
+		String systemId = (String)map.get(UAOPConstant.KEY_SYSTEMID);
 		for(User user : list){
-        	String roleNameListStr = this.getRoleListStrByAccount(user.getAccount());
+        	String roleNameListStr = this.getRoleListStrByAccount(user.getAccount(),systemId);
         	user.setRoleName(roleNameListStr);
         }
 		return list;
@@ -381,8 +403,9 @@ public class UserServiceImpl implements UserService {
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		QueryCondition condition = queryFilter.getQueryCondition();
+		String systemId = null;
 		if(condition != null){
-			String systemId = condition.getSystemId();
+			systemId = condition.getSystemId();
 			map.put("systemId", systemId);
 			String userId = condition.getUserId();
 			map.put("userId", userId);
@@ -390,13 +413,17 @@ public class UserServiceImpl implements UserService {
 			map.put("userName", userName);
 			String account = condition.getAccount();
 			map.put("account", account);
+			String roleName = condition.getRoleName();
+			map.put("roleName", roleName);
+//			int userType = condition.getUserType();
+//			map.put("userType", userType);
 		}
 		
 		PageHelper.startPage(pageNum, pageSize, orderBy);
         Page<User> page = (Page<User>)userMapper.query(map);
         
         for(User user : page){
-        	String roleNameListStr = this.getRoleListStrByAccount(user.getAccount());
+        	String roleNameListStr = this.getRoleListStrByAccount(user.getAccount(),systemId);
         	user.setRoleName(roleNameListStr);
         }
         //组织结果
@@ -414,7 +441,7 @@ public class UserServiceImpl implements UserService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String getRoleListStrByAccount(String account) throws Exception{
+	public String getRoleListStrByAccount(String account,String systemId) throws Exception{
 		List<Role> roleList = roleMapper.getRoleListByAccount(account);
 		if(roleList == null || roleList.size() <= 0){
 			return null;
@@ -425,6 +452,12 @@ public class UserServiceImpl implements UserService {
 			String roleName = role.getRoleName();
 			if(StringUtils.isEmpty(roleName)){
 				continue;
+			}
+			
+			if(!StringUtils.isEmpty(systemId)){ //查询条件中有systemId
+				if(role.getSystemId() == null || !role.getSystemId().equals(systemId)){
+					continue;
+				}
 			}
 			
 			sb.append(roleName).append(",");
@@ -447,5 +480,24 @@ public class UserServiceImpl implements UserService {
 	@Consumes({MediaType.APPLICATION_JSON})
 	public Map<String, String> modifyPass(Map<String, Object> map) throws Exception {
 		return sysAccountService.modifyPass(map);
+	}
+	
+	/**
+	 * 根据token获取用户信息
+	 * @param token
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	@GET
+	@Path("{token}/infobytoken")
+	public User getUserByToken(@PathParam("token") String token) throws Exception{
+		LogToken logToken = logTokenMapper.getById(token);
+		if(logToken == null){
+			throw new RestBusinessException(Response.Status.NOT_FOUND, "找不到对应的token记录");
+		}
+		
+		String userId = logToken.getUserId();
+		return this.getUserByUserId(userId);
 	}
 }

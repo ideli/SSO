@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.dubbo.rpc.protocol.rest.support.ContentType;
 import com.hisign.sso.api.entity.sys.SysUserRole;
+import com.hisign.sso.api.rest.exception.RestBusinessException;
 import com.hisign.sso.api.service.sys.SysUserRoleService;
 import com.hisign.sso.persist.mapper.sys.SysUserRoleMapper;
 import com.hisign.sso.service.impl.helper.BatchCommitHelper;
@@ -89,8 +91,7 @@ public class SysUserRoleServiceImpl implements SysUserRoleService {
 		try{
 			mapper.deleteByUserIds(userIds);
 		}catch(Exception ex){
-			resultMap.put("message", "删除失败");
-			return resultMap;
+			throw new RestBusinessException(Status.NOT_ACCEPTABLE, "删除失败");
 		}
 		
 		resultMap.put("message", "删除成功");

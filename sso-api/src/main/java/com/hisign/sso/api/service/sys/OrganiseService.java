@@ -135,7 +135,7 @@ public interface OrganiseService{
 	public List<Organise> getAllOrganiseTreeBySystem(String systemId) throws Exception;
 	
 	/**
-	 * 按照系统编号获取组织机构树
+	 * 按照systemId和superId获取组织机构树
 	 * @param map
 	 * @return
 	 * @throws Exception

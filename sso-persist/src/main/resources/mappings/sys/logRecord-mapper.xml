@@ -49,7 +49,10 @@
 		from UAOP_LOG_RECORD
 		<where>
 			<if test="account != null and account != ''">
-				and ACCOUNT like '%'||#{account}||'%'
+				and ACCOUNT = #{account}
+			</if>
+			<if test="systemId != null and systemId != ''">
+				and SYSTEM_ID = #{systemId}
 			</if>
 		</where>
 	</sql>

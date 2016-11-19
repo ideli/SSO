@@ -69,6 +69,10 @@ public class UAOPConstant {
 		public static final int NORMAL = 0;  //委托用户
 		public static final int EXTSUBMISSION = 1; //外部委托用户
 		public static final int INDENTIFY = 2; //鉴定用户
+		
+		public static final int XCKY = 10; //现勘用户
+		
+		public static final int YTHPT = 20; //一体化平台用户
 	}
 	
 	/**
@@ -93,5 +97,13 @@ public class UAOPConstant {
 	public static final class ActiveStatus{ 
 		public static final int UNACTIVE = 0;  //不启用
 		public static final int ACTIVE = 1; //启用
+	}
+	
+	/**
+	 * 菜单类型
+	 */
+	public static final class MenuType{ 
+		public static final int MENU = 0;  //菜单 
+		public static final int BUTTON = 1; //按钮
 	}
 }

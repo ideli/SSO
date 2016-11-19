@@ -32,23 +32,18 @@
 	
 	<!-- 修改 -->
 	<update id="update" parameterType="RoleResource">
-		update UAOP_ROLE_RESOURCE set PRIVILEGE_VALUE=#{privilegeValue} where ID=#{id}
+		update UAOP_ROLE_RESOURCE set PRIVILEGE_VALUE=#{privilegeValue} where SYSTEM_ID=#{systemId} and ROLE_ID=#{roleId} and RESOURCE_ID=#{resourceId}
 	</update>
 	
 	<!-- 删除 -->
-	<delete id="delete" parameterType="String">
-		delete from UAOP_ROLE_RESOURCE where ID=#{id}
+	<delete id="delete" parameterType="RoleResource">
+		delete from UAOP_ROLE_RESOURCE where SYSTEM_ID=#{systemId} and ROLE_ID=#{roleId} and RESOURCE_ID=#{resourceId}
 	</delete>
 	
-	<!-- 根据主键查询 -->
-	<select id="getById" resultMap="roleResourceMap" parameterType="String">
-		select
-		<include refid="selectId" />
-		from UAOP_ROLE_RESOURCE
-		<where>
-			ID=#{id}
-		</where>
-	</select>
+	<!-- 删除 -->
+	<delete id="deleteByCondition" parameterType="java.util.HashMap">
+		delete <include refid="clausePage" />
+	</delete>
 	
 	<sql id="clausePage">
 		from UAOP_ROLE_RESOURCE
@@ -83,19 +78,18 @@
 	
 	<!-- 以下与实体类的中字段一致 -->
 	<sql id="selectId">
-		ID,ROLE_ID,RESOURCE_ID,RESOURCE_TYPE,PRIVILEGE_VALUE,SYSTEM_ID
+		ROLE_ID,RESOURCE_ID,RESOURCE_TYPE,PRIVILEGE_VALUE,SYSTEM_ID
 	</sql>
 
 	<sql id="insertId">
-		#{id,jdbcType=NUMERIC},#{roleId,jdbcType=VARCHAR},#{resourceId,jdbcType=VARCHAR},#{resourceType,jdbcType=NUMERIC},#{privilegeValue,jdbcType=NUMERIC},#{systemId,jdbcType=VARCHAR}
+		#{roleId,jdbcType=VARCHAR},#{resourceId,jdbcType=VARCHAR},#{resourceType,jdbcType=NUMERIC},#{privilegeValue,jdbcType=NUMERIC},#{systemId,jdbcType=VARCHAR}
 	</sql>
 
 	<sql id="insertBatchId">
-		#{item.id,jdbcType=NUMERIC},#{item.roleId,jdbcType=VARCHAR},#{item.resourceId,jdbcType=VARCHAR},#{item.resourceType,jdbcType=NUMERIC},#{item.privilegeValue,jdbcType=NUMERIC},#{item.systemId,jdbcType=VARCHAR}
+		#{item.roleId,jdbcType=VARCHAR},#{item.resourceId,jdbcType=VARCHAR},#{item.resourceType,jdbcType=NUMERIC},#{item.privilegeValue,jdbcType=NUMERIC},#{item.systemId,jdbcType=VARCHAR}
 	</sql>
 
 	<resultMap type="com.hisign.sso.api.entity.sys.RoleResource" id="roleResourceMap">
-	    <result property="id" column="ID" />
 	    <result property="systemId" column="SYSTEM_ID" />
 		<result property="roleId" column="ROLE_ID" />
 		<result property="resourceId" column="RESOURCE_ID" />

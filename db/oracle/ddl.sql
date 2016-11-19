@@ -43,16 +43,15 @@ CREATE TABLE UAOP_ROLE
   PRIMARY KEY(ROLE_ID)
 );
 
-DROP Table UAOP_ROLE_RESOURCE;
+-- DROP Table UAOP_ROLE_RESOURCE;
 CREATE TABLE UAOP_ROLE_RESOURCE
 (
-   ID                NUMERIC(20,0) NOT NULL,
    ROLE_ID           VARCHAR(32) NOT NULL,
    RESOURCE_ID       VARCHAR(128) NOT NULL,
    RESOURCE_TYPE     NUMERIC(3,0) NOT NULL,
    PRIVILEGE_VALUE   NUMERIC(20,0),
    SYSTEM_ID         VARCHAR(32) NOT NULL,
-   PRIMARY KEY(ID)
+   PRIMARY KEY(ROLE_ID,RESOURCE_ID,SYSTEM_ID)
 );
 
 -- DROP Table UAOP_MENU_RESOURCE;
@@ -175,7 +174,7 @@ CREATE TABLE UAOP_SYSPARAM
 
 
 -- Create table
-create table LOG_TOKEN
+create table UAOP_LOG_TOKEN
 (
   TOKEN          VARCHAR2(32) not null,
   ACCOUNT        VARCHAR2(128) not null,
@@ -188,36 +187,36 @@ create table LOG_TOKEN
   USER_ID        VARCHAR2(128)
 );
 -- Add comments to the table 
-comment on table LOG_TOKEN
+comment on table UAOP_LOG_TOKEN
   is '口令日志表';
 -- Add comments to the columns 
-comment on column LOG_TOKEN.TOKEN
+comment on column UAOP_LOG_TOKEN.TOKEN
   is '固定32位';
-comment on column LOG_TOKEN.ACCOUNT
+comment on column UAOP_LOG_TOKEN.ACCOUNT
   is '用户账号';
-comment on column LOG_TOKEN.SYS_CODE
+comment on column UAOP_LOG_TOKEN.SYS_CODE
   is '系统编码';
-comment on column LOG_TOKEN.TOKEN_TIME
+comment on column UAOP_LOG_TOKEN.TOKEN_TIME
   is '日期(yyyyMMddHHmmss)14位日期';
-comment on column LOG_TOKEN.RANDOM_VAL
+comment on column UAOP_LOG_TOKEN.RANDOM_VAL
   is '6位随机数';
-comment on column LOG_TOKEN.EFFECTIVE_TIME
+comment on column UAOP_LOG_TOKEN.EFFECTIVE_TIME
   is '令牌生效时间(长整形)';
-comment on column LOG_TOKEN.INVALID_TIME
+comment on column UAOP_LOG_TOKEN.INVALID_TIME
   is '令牌失效时间(长整形)';
-comment on column LOG_TOKEN.CREATE_DATE
+comment on column UAOP_LOG_TOKEN.CREATE_DATE
   is '创建时间';
-comment on column LOG_TOKEN.USER_ID
+comment on column UAOP_LOG_TOKEN.USER_ID
   is '用户ID';
 -- Create/Recreate primary, unique and foreign key constraints 
-alter table LOG_TOKEN
-  add constraint PK_LOG_TOKEN primary key (TOKEN);
+alter table UAOP_LOG_TOKEN
+  add constraint PK_UAOP_LOG_TOKEN primary key (TOKEN);
 
 
--- Create table
-create table SYS_DICT
+-- DROP Table UAOP_SYS_DICT;
+create table UAOP_SYS_DICT
 (
-  ID              CHAR(32) not null,
+  ID              VARCHAR(32) not null,
   SYS_CODE        VARCHAR(32),
   DICT_LEVEL      VARCHAR(4) not null,
   DICT_KEY        VARCHAR(50) not null,
@@ -237,6 +236,8 @@ create table SYS_DICT
   CREATE_DATETIME NUMERIC(20,0) not null,
   UPDATE_USER     VARCHAR(50),
   UPDATE_DATETIME NUMERIC(20,0),
+  PARENT_ROOT_KEY VARCHAR(50),
+  TYPE            VARCHAR(2),
   PRIMARY KEY(ID)
 );
 
@@ -258,3 +259,18 @@ CREATE TABLE UAOP_LOG_RECORD
 );
 
 
+-- 增加是否启用状态
+ALTER TABLE UAOP_SYSUSER add ACTIVE_STATUS NUMERIC(3,0) DEFAULT 1;
+
+-- 增加菜单类型
+ALTER TABLE UAOP_MENU_RESOURCE add MENU_TYPE NUMERIC(3,0)  DEFAULT 0;
+
+-- 角色增加系统标志
+ALTER TABLE UAOP_ROLE add SYSTEM_ID  VARCHAR(32);
+ALTER TABLE UAOP_ROLE add ACTIVE_STATUS NUMERIC(3,0) DEFAULT 1;
+
+-- 菜单增加英文名称
+ALTER TABLE UAOP_MENU_RESOURCE add RESOURCE_EN_NAME   VARCHAR(512);
+
+-- 菜单类型默认值0
+ALTER TABLE UAOP_MENU_RESOURCE modify MENU_TYPE NUMERIC(3,0)  DEFAULT 0;

@@ -81,6 +81,9 @@
 			<if test="note != null and note != ''">
 				and NOTE like '%'||#{note}||'%'
 			</if>
+			<if test="systemId != null and systemId != ''">
+				and SYSTEM_ID=#{systemId}
+			</if>
 		</where>
 	</sql>
 
@@ -118,19 +121,19 @@
 
 	<!-- 以下与实体类的中字段一致 -->
 	<sql id="selectId">
-		ROLE_ID,ROLE_NAME,SUPER_ID,NOTE,STATUS,CREATE_ACCOUNT,CREATE_TIME,LAST_TERMINAL,LAST_SYS
+		ROLE_ID,ROLE_NAME,SUPER_ID,NOTE,SYSTEM_ID,TYPE,STATUS,CREATE_ACCOUNT,CREATE_TIME,LAST_TERMINAL,LAST_SYS,ACTIVE_STATUS
 	</sql>
 
 	<sql id="insertId">
-		#{roleId,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR},#{superId,jdbcType=VARCHAR},#{note,jdbcType=VARCHAR},#{status,jdbcType=NUMERIC},#{createAccount,jdbcType=VARCHAR},#{createTime,jdbcType=NUMERIC},#{lastTerminal,jdbcType=VARCHAR},#{lastSys,jdbcType=VARCHAR}
+		#{roleId,jdbcType=VARCHAR},#{roleName,jdbcType=VARCHAR},#{superId,jdbcType=VARCHAR},#{note,jdbcType=VARCHAR},#{systemId,jdbcType=VARCHAR},#{type,jdbcType=NUMERIC},#{status,jdbcType=NUMERIC},#{createAccount,jdbcType=VARCHAR},#{createTime,jdbcType=NUMERIC},#{lastTerminal,jdbcType=VARCHAR},#{lastSys,jdbcType=VARCHAR},#{activeStatus,jdbcType=NUMERIC}
 	</sql>
 
 	<sql id="insertBatchId">
-		#{item.roleId,jdbcType=VARCHAR},#{item.roleName,jdbcType=VARCHAR},#{item.superId,jdbcType=VARCHAR},#{item.note,jdbcType=VARCHAR},#{item.status,jdbcType=NUMERIC},#{item.createAccount,jdbcType=VARCHAR},#{item.createTime,jdbcType=NUMERIC},#{item.lastTerminal,jdbcType=VARCHAR},#{item.lastSys,jdbcType=VARCHAR}
+		#{item.roleId,jdbcType=VARCHAR},#{item.roleName,jdbcType=VARCHAR},#{item.superId,jdbcType=VARCHAR},#{item.note,jdbcType=VARCHAR},#{item.systemId,jdbcType=VARCHAR},#{item.type,jdbcType=NUMERIC},#{item.status,jdbcType=NUMERIC},#{item.createAccount,jdbcType=VARCHAR},#{item.createTime,jdbcType=NUMERIC},#{item.lastTerminal,jdbcType=VARCHAR},#{item.lastSys,jdbcType=VARCHAR},#{activeStatus,jdbcType=NUMERIC}
 	</sql>
 
 	<sql id="updateId">
-		ROLE_ID=#{roleId,jdbcType=VARCHAR},ROLE_NAME=#{roleName,jdbcType=VARCHAR},SUPER_ID=#{superId,jdbcType=VARCHAR},NOTE=#{note,jdbcType=VARCHAR},STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR}
+		ROLE_ID=#{roleId,jdbcType=VARCHAR},ROLE_NAME=#{roleName,jdbcType=VARCHAR},SUPER_ID=#{superId,jdbcType=VARCHAR},NOTE=#{note,jdbcType=VARCHAR},SYSTEM_ID=#{systemId,jdbcType=VARCHAR},TYPE=#{type,jdbcType=NUMERIC},STATUS=#{status,jdbcType=NUMERIC},LAST_MODIFY_ACCOUNT=#{lastModifyAccount,jdbcType=VARCHAR},LAST_MODIFY_TIME=#{lastModifyTime,jdbcType=NUMERIC},LAST_TERMINAL=#{lastTerminal,jdbcType=VARCHAR},LAST_SYS=#{lastSys,jdbcType=VARCHAR},ACTIVE_STATUS=#{activeStatus,jdbcType=NUMERIC}
 	</sql>
 
     <sql id="updateStatusId">
@@ -143,6 +146,7 @@
 		<result property="roleName" column="ROLE_NAME" />
 		<result property="superId" column="SUPER_ID" />
 		<result property="note" column="NOTE" />
+		<result property="systemId" column="SYSTEM_ID" />
 		<result property="status" column="STATUS" />
 		<result property="createAccount" column="CREATE_ACCOUNT" />
 		<result property="createTime" column="CREATE_TIME" />
@@ -150,6 +154,7 @@
 		<result property="lastModifyTime" column="LAST_MODIFY_TIME" />
 		<result property="lastTerminal" column="LAST_TERMINAL" />
 		<result property="lastSys" column="LAST_SYS" />
+		<result property="activeStatus" column="ACTIVE_STATUS" />
 	</resultMap>
 
 </mapper>

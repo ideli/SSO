@@ -1,6 +1,7 @@
 package com.hisign.sso.api.service.sys;
 
 import java.util.List;
+import java.util.Map;
 
 import com.hisign.sso.api.entity.sys.UserOrganization;
 
@@ -42,5 +43,13 @@ public interface UserOrganizationService {
 	 * @return
 	 */
 	public List<String> getUserIdsInOrganization(String orgId);
+	
+	
+	/**
+	 * 根据userId列表真实删除
+	 * @param userIds
+	 */
+	public Map<String,Object> deleteByUserIds(List<String> userIds) throws Exception;
+	
 
 }

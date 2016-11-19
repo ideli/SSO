@@ -3,6 +3,8 @@ package com.hisign.sso.api.service.sys;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.PathParam;
+
 import com.hisign.sso.api.entity.sys.MenuResource;
 
 /**
@@ -109,5 +111,37 @@ public interface MenuResourceService {
 	 * @return
 	 */
 	public List<MenuResource> getAuthedMenusByAccount(Map<String, Object> map)  throws Exception;
+	
+	/**
+	 * 根据systemId获取某个系统下的所有仅菜单项，不包含按钮
+	 * @param systemId
+	 * @return
+	 * @throws Exception
+	 */
+	public List<MenuResource> getAllOnlyMenusBySystemId(String systemId) throws Exception;
+	
+	/**
+	 * 根据systemId获取某个系统下的所有仅菜单项，不包含按钮
+	 * @param systemId
+	 * @return
+	 * @throws Exception
+	 */
+	public List<MenuResource> getAllOnlyButtonsBySystemId(String systemId) throws Exception;
+	
+	/**
+	 * 删除所有的子菜单
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	public Map<String,String> deleteChildrenMenuResources(Map<String, Object> map) throws Exception;
+	
+	/**
+	 * 查询所有子节点元素
+	 * @author yinxiaoyong
+	 * @mailto yinxiaoyong@hisign.com.cn
+	 * 2016年11月18日
+	 */
+	public List<MenuResource> getChildrenById(MenuResource menuResource) throws Exception;
 	
 }
