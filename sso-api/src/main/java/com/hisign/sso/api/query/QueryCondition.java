@@ -35,7 +35,7 @@ public class QueryCondition implements Serializable{
 	private String policeId;
 	
 	//状态
-	private int status;
+	private int status = -1;
 	
 	//角色Id
 	private String roleId;
@@ -65,7 +65,7 @@ public class QueryCondition implements Serializable{
 	private String note;
 	
 	//类型
-	private int type;
+	private int type = -1;
 	
 	//上级Id
 	private String superId;

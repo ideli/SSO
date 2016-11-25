@@ -48,5 +48,12 @@ public interface UserMapper extends BaseMapper<User> {
 	 * @return
 	 */
 	public List<User> getUsersUnderOrganise(Map<String,Object> map);
+	
+	/**
+	 * 根据用户账号account获取用户完整信息，包含组织机构名称等
+	 * @param userId
+	 * @return
+	 */
+	public User getUserByAccount(String account);
 
 }

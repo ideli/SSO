@@ -126,4 +126,11 @@ public interface UserService {
 	 * @throws Exception
 	 */
 	public User getUserByToken(String token) throws Exception;
+	
+	/**
+	 * 根据用户Account获取用户完整信息，包含组织机构名称等
+	 * @param userId
+	 * @return
+	 */
+	public User getUserByAccount(String account) throws Exception;
 }

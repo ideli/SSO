@@ -10,7 +10,7 @@
 	<select id="isPoliceIdExist" resultType="Integer" parameterType="String">
 		select count(0) from UAOP_USER_INFO where POLICE_ID=#{policeId}
 	</select>
-	
+
 	<!--获取完整用户信息 -->
 	<select id="getUserById" resultMap="userMap" parameterType="String">
 		select
@@ -18,6 +18,15 @@
 		from UAOP_USER_INFO i,UAOP_ORGANIZATION o,UAOP_USER_ORGANIZATION uo,UAOP_SYSUSER a
 		where i.STATUS=0 and i.USER_ID=#{userId} and
 		i.USER_ID=uo.USER_ID and uo.ORG_ID=o.ORG_ID and i.USER_ID=a.USER_ID
+	</select>
+	
+	<!--获取完整用户信息通过账号 -->
+	<select id="getUserByAccount" resultMap="userMap" parameterType="String">
+		select
+		<include refid="userSelectId" />
+		from UAOP_USER_INFO i,UAOP_ORGANIZATION o,UAOP_USER_ORGANIZATION uo,UAOP_SYSUSER a
+		where i.STATUS=0 and
+		i.USER_ID=uo.USER_ID and uo.ORG_ID=o.ORG_ID and i.USER_ID=a.USER_ID and a.ACCOUNT = #{account}
 	</select>
 	
 	
@@ -37,10 +46,10 @@
 		<if test="account != null  and account != ''">
 			and a.ACCOUNT = #{account}
 		</if>
-		<if test="userType != null">
+		<if test="userType !=null and userType !=-1 ">
 			and a.USER_TYPE = #{userType}
 		</if>
-		<if test="activeStatus != null">
+		<if test="activeStatus != null and activeStatus !=-1">
 			and a.ACTIVE_STATUS = #{activeStatus}
 		</if>
 		<if test="roleName != null and roleName != ''">
@@ -57,7 +66,7 @@
 			and o.ORG_NAME like
 			CONCAT(CONCAT('%',#{orgName}),'%') escape '\'
 		</if>
-		<if test="orgType != null">
+		<if test="orgType != null and orgType !=-1">
 			and o.TYPE = #{orgType}
 		</if>
 		<if test="systemId != null and systemId != ''">

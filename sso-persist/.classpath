@@ -4,9 +4,12 @@
   <classpathentry kind="src" path="src/main/java" including="**/*.java"/>
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01.jar" sourcepath="M2_REPO/javax/mail/mail/1.5.0-b01/mail-1.5.0-b01-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar" sourcepath="M2_REPO/javax/activation/activation/1.1/activation-1.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.2/jstl-1.2.jar" sourcepath="M2_REPO/javax/servlet/jstl/1.2/jstl-1.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar" sourcepath="M2_REPO/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.2.7/jaxb-api-2.2.7.jar" sourcepath="M2_REPO/javax/xml/bind/jaxb-api/2.2.7/jaxb-api-2.2.7-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/xml/bind/jsr173_api/1.0/jsr173_api-1.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar" sourcepath="M2_REPO/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_79"/>
   <classpathentry kind="src" path="/sso-api"/>
@@ -86,6 +89,14 @@
   <classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.3.1/gson-2.3.1.jar" sourcepath="M2_REPO/com/google/code/gson/gson/2.3.1/gson-2.3.1-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcprov-jdk15/1.43/bcprov-jdk15-1.43.jar" sourcepath="M2_REPO/org/bouncycastle/bcprov-jdk15/1.43/bcprov-jdk15-1.43-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/hisign/rong-server-sdk/1.0-SNAPSHOT/rong-server-sdk-1.0-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/jboss/resteasy/resteasy-multipart-provider/3.0.7.Final/resteasy-multipart-provider-3.0.7.Final.jar" sourcepath="M2_REPO/org/jboss/resteasy/resteasy-multipart-provider/3.0.7.Final/resteasy-multipart-provider-3.0.7.Final-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/jboss/resteasy/resteasy-jaxb-provider/3.0.7.Final/resteasy-jaxb-provider-3.0.7.Final.jar" sourcepath="M2_REPO/org/jboss/resteasy/resteasy-jaxb-provider/3.0.7.Final/resteasy-jaxb-provider-3.0.7.Final-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/xml/bind/jaxb-impl/2.2.7/jaxb-impl-2.2.7.jar" sourcepath="M2_REPO/com/sun/xml/bind/jaxb-impl/2.2.7/jaxb-impl-2.2.7-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/xml/bind/jaxb-core/2.2.7/jaxb-core-2.2.7.jar" sourcepath="M2_REPO/com/sun/xml/bind/jaxb-core/2.2.7/jaxb-core-2.2.7-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/istack/istack-commons-runtime/2.16/istack-commons-runtime-2.16.jar" sourcepath="M2_REPO/com/sun/istack/istack-commons-runtime/2.16/istack-commons-runtime-2.16-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/xml/fastinfoset/FastInfoset/1.2.12/FastInfoset-1.2.12.jar" sourcepath="M2_REPO/com/sun/xml/fastinfoset/FastInfoset/1.2.12/FastInfoset-1.2.12-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/james/apache-mime4j/0.6/apache-mime4j-0.6.jar" sourcepath="M2_REPO/org/apache/james/apache-mime4j/0.6/apache-mime4j-0.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/hisign/sdk-fdfs-client/1.0-SNAPSHOT/sdk-fdfs-client-1.0-SNAPSHOT.jar"/>
   <classpathentry kind="src" path="/sso-common"/>
   <classpathentry kind="var" path="M2_REPO/com/github/pagehelper/pagehelper/4.1.6/pagehelper-4.1.6.jar" sourcepath="M2_REPO/com/github/pagehelper/pagehelper/4.1.6/pagehelper-4.1.6-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/github/jsqlparser/jsqlparser/0.9.5/jsqlparser-0.9.5.jar" sourcepath="M2_REPO/com/github/jsqlparser/jsqlparser/0.9.5/jsqlparser-0.9.5-sources.jar"/>

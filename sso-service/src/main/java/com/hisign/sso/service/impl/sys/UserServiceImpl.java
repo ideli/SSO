@@ -243,17 +243,48 @@ public class UserServiceImpl  implements UserService {
 			throw new RestBusinessException(Response.Status.NOT_FOUND, "不存在该用户");
 		}
 	
+		this.setUserFirstRoleName(user);
+		user.setAvatar("");
+		
+		return user;
+	}
+	
+	/**
+	 * 设置用户第一个角色名
+	 * @param user
+	 * @throws Exception
+	 */
+	private void setUserFirstRoleName(User user) throws Exception{
 		String roleName = "";
 		List<Role> roleList = roleMapper.getRoleListByAccount(user.getAccount());
 		if(roleList != null && roleList.size() > 0){
 			Role defaultRole = roleList.get(0);
 			roleName = defaultRole.getRoleName();
 		}
+		
 		user.setRoleName(roleName);
+	}
+	
+	
+	/**
+	 * 根据用户Account获取用户完整信息，包含组织机构名称等
+	 * @param userId
+	 * @return
+	 */
+	@GET
+	@Path("{account}/byaccount")
+	public User getUserByAccount(@PathParam("account") String account) throws Exception{
+		User user = this.userMapper.getUserByAccount(account);
+		if(user == null){
+			throw new RestBusinessException(Response.Status.NOT_FOUND, "不存在该用户");
+		}
+	
+		this.setUserFirstRoleName(user);
 		user.setAvatar("");
 		
 		return user;
 	}
+	
 	
 	@POST
 	@Path("update")
@@ -415,8 +446,8 @@ public class UserServiceImpl  implements UserService {
 			map.put("account", account);
 			String roleName = condition.getRoleName();
 			map.put("roleName", roleName);
-//			int userType = condition.getUserType();
-//			map.put("userType", userType);
+			int userType = condition.getUserType();
+			map.put("userType", userType);
 		}
 		
 		PageHelper.startPage(pageNum, pageSize, orderBy);
